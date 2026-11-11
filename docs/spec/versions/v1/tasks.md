@@ -77,14 +77,14 @@
 
 ---
 
-- [ ] **TASK-004 · 终端 ANSI 输出捕获与哈希差异跟踪**
+- [x] **TASK-004 · 终端 ANSI 输出捕获与哈希差异跟踪**
 
   > 依赖：TASK-002
 
-  - [ ] 实现 `tmux capture-pane -p -e -t %id` 命令执行与 ANSI 彩色转义字符完整保留
-  - [ ] 实现终端末尾 N 行文本提取与 64 位内容哈希算法
-  - [ ] 实现活跃状态追踪逻辑：哈希变动时刷新 `LastActiveAt`，超时无变动识别为可能 idle
-  - [ ] 对 `pane_dead == 1` 的 Pane 标记状态终结并停止无效轮询
+  - [x] 实现 `tmux capture-pane -p -e -t %id` 命令执行与 ANSI 彩色转义字符完整保留
+  - [x] 实现终端末尾 N 行文本提取与 64 位内容哈希算法
+  - [x] 实现活跃状态追踪逻辑：哈希变动时刷新 `LastActiveAt`，超时无变动识别为可能 idle
+  - [x] 对 `pane_dead == 1` 的 Pane 标记状态终结并停止无效轮询
 
   **验证方式：**
   ```bash
@@ -277,7 +277,7 @@
 | TASK-001 | 项目基础脚手架、配置模型与解析器 | Unit | 🟢 done | v1.REQ-004 |
 | TASK-002 | Tmux CLI 采集器与版本探测兼容 | Unit | 🟢 done | v1.REQ-001 |
 | TASK-003 | 跨平台进程树探测器与 Agent 进程关联 | Unit | 🟢 done | v1.REQ-001 |
-| TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | Unit | ⬜ 待开始 | v1.REQ-002 |
+| TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | Unit | 🟢 done | v1.REQ-002 |
 | TASK-005 | 多智能体状态判定引擎与内存存储 | Unit | ⬜ 待开始 | v1.REQ-003 |
 | TASK-006 | 后端 HTTP REST API 与 Token 认证中间件 | API | ⬜ 待开始 | v1.REQ-005 |
 | TASK-007 | WebSocket Hub 实时推流服务 | API | ⬜ 待开始 | v1.REQ-005 |

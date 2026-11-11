@@ -9,7 +9,7 @@
 ## 当前活跃 Version
 
 ```yaml
-current_version: v1
+current_version: v2
 ```
 
 ---
@@ -18,8 +18,9 @@ current_version: v1
 
 | Version | 状态 | 路径 | 说明 |
 |---------|:----:|------|------|
-| v1 | active | `docs/spec/versions/v1/` | 首个 version，正在执行 |
-| v2 | planned | `docs/spec/versions/v2/` | 待 v1 完成后启动 |
+| v1 | finished | `docs/spec/versions/v1-finished/` | 首个 version，已全部完成验收交付 |
+| v2 | active | `docs/spec/versions/v2/` | 当前活跃 version |
+| v3 | planned | `docs/spec/versions/v3/` | 待 v2 完成后启动 |
 
 > 完成一个 version 时：
 > 1. 将目录改名 `v1` → `v1-finished`

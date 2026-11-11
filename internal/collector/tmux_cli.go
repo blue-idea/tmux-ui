@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -26,6 +27,25 @@ type DefaultTmuxExecutor struct{}
 
 func (e *DefaultTmuxExecutor) Execute(ctx context.Context, args ...string) ([]byte, error) {
 	cmd := exec.CommandContext(ctx, "tmux", args...)
+	// 确保注入 UTF-8 语言环境变量，防止 tmux 在 C locale 下将 format 中的制表符等非字母字符转义为下划线
+	env := os.Environ()
+	hasLC := false
+	hasLang := false
+	for _, kv := range env {
+		if strings.HasPrefix(kv, "LC_ALL=") {
+			hasLC = true
+		}
+		if strings.HasPrefix(kv, "LANG=") {
+			hasLang = true
+		}
+	}
+	if !hasLC {
+		env = append(env, "LC_ALL=en_US.UTF-8")
+	}
+	if !hasLang {
+		env = append(env, "LANG=en_US.UTF-8")
+	}
+	cmd.Env = env
 	return cmd.CombinedOutput()
 }
 

@@ -23,6 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 web/dist/
 
+# Runtime Data
+data/
+
 # OS and Editor files
 .DS_Store
 Thumbs.db

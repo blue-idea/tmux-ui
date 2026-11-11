@@ -17,6 +17,8 @@ vi.mock('@xterm/xterm', () => {
       loadAddon: vi.fn(),
       onData: vi.fn(),
       clear: vi.fn(),
+      reset: vi.fn(),
+      scrollToBottom: vi.fn(),
       options: {},
     })),
   }

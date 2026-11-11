@@ -124,14 +124,14 @@
 
 ---
 
-- [ ] **TASK-018 · 终端详情页时间轴回放播放器与 Live 追踪切换**
+- [x] **TASK-018 · 终端详情页时间轴回放播放器与 Live 追踪切换**
 
   > 依赖：TASK-015, TASK-017
 
-  - [ ] 实现 `web/src/hooks/useHistory.ts`：拉取指定 Pane 的历史快照列表，维护回放模式与选中快照
-  - [ ] 开发 `web/src/components/PlaybackBar.tsx`：可拖动时间轴滑块、历史状态跃迁节点刻度渲染、快照时间指示
-  - [ ] 终端详情页联动：拖拽或点击刻度时暂停实时 WS 推流，xterm.js 瞬时切换渲染历史 ANSI 文本，并展示「Historical Playback」提示条
-  - [ ] 点击「Return to Live」按钮一键退出回放模式，无缝恢复实时终端流更新
+  - [x] 实现 `web/src/hooks/useHistory.ts`：拉取指定 Pane 的历史快照列表，维护回放模式与选中快照
+  - [x] 开发 `web/src/components/PlaybackBar.tsx`：可拖动时间轴滑块、历史状态跃迁节点刻度渲染、快照时间指示
+  - [x] 终端详情页联动：拖拽或点击刻度时暂停实时 WS 推流，xterm.js 瞬时切换渲染历史 ANSI 文本，并展示「Historical Playback」提示条
+  - [x] 点击「Return to Live」按钮一键退出回放模式，无缝恢复实时终端流更新
 
   **验证方式：**
   ```bash

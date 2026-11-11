@@ -52,6 +52,24 @@ export interface WSMessage<T = unknown> {
   payload: T;
 }
 
+export interface SnapshotMetadata {
+  snapshot_id: string;
+  pane_id: string;
+  timestamp: number;
+  event_type: string;
+  old_state: State;
+  new_state: State;
+  summary: string;
+  byte_length: number;
+}
+
+export interface SnapshotRecord extends SnapshotMetadata {
+  session_name: string;
+  window_id: string;
+  output_buffer: string;
+  tail_lines: string[];
+}
+
 export interface WSSnapshotPayload {
   panes: PaneSummary[];
 }

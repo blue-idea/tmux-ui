@@ -5,7 +5,9 @@ import '@xterm/xterm/css/xterm.css'
 import type { PaneDetail } from '@/types'
 import { StatusBadge } from './StatusBadge'
 import { TimelineDrawer } from './TimelineDrawer'
-import { useIsMobile } from '@/hooks/useMediaQuery'
+import { PlaybackBar } from './PlaybackBar'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useHistory } from '@/hooks/useHistory'
 import {
   ArrowLeft,
   Lock,
@@ -30,12 +32,24 @@ export const TerminalViewer: React.FC<TerminalViewerProps> = ({ detail, onBack }
   const fitAddonRef = useRef<FitAddon | null>(null)
   const [copied, setCopied] = useState(false)
   const [isTimelineOpen, setIsTimelineOpen] = useState(false)
-  const isMobile = useIsMobile()
+  const isMobile = useMediaQuery('(max-width: 767px)')
+
+  // 历史回放 Hook
+  const {
+    snapshots,
+    isLive,
+    activeSnapshotId,
+    playbackOutput,
+    selectSnapshot,
+    returnToLive,
+  } = useHistory(detail.pane_id)
+
+  const displayedContent = isLive ? detail.terminal_output : (playbackOutput ?? '')
 
   useEffect(() => {
     if (!containerRef.current) return
 
-    // 初始化 xterm 实例（只读安全保护，针对移动端自适应字体）
+    // 初始化 xterm 实例（只读安全保护）
     const term = new Terminal({
       cursorBlink: false,
       disableStdin: true, // 核心安全约束：禁用任何键盘输入
@@ -71,9 +85,9 @@ export const TerminalViewer: React.FC<TerminalViewerProps> = ({ detail, onBack }
     termRef.current = term
     fitAddonRef.current = fitAddon
 
-    // 写入 ANSI 字符流
-    if (detail.terminal_output) {
-      term.write(detail.terminal_output)
+    // 写入初始 ANSI 字符流
+    if (displayedContent) {
+      term.write(displayedContent)
     }
 
     // 监听容器大小变动
@@ -95,12 +109,24 @@ export const TerminalViewer: React.FC<TerminalViewerProps> = ({ detail, onBack }
       }
       term.dispose()
     }
-  }, [detail.terminal_output, isMobile])
+  }, [isMobile])
+
+  // 内容发生变动（实时更新或历史回放切换）时重刷终端
+  useEffect(() => {
+    if (!termRef.current) return
+    if (termRef.current.clear) {
+      termRef.current.clear()
+    }
+    if (displayedContent) {
+      termRef.current.write(displayedContent)
+    }
+  }, [displayedContent])
 
   const handleCopy = async () => {
-    if (!detail.terminal_output) return
+    const textToCopy = displayedContent || detail.terminal_output
+    if (!textToCopy) return
     try {
-      await navigator.clipboard.writeText(detail.terminal_output)
+      await navigator.clipboard.writeText(textToCopy)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
@@ -179,7 +205,7 @@ export const TerminalViewer: React.FC<TerminalViewerProps> = ({ detail, onBack }
 
       {/* 主工作区：终端视口与侧边进程树 */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-3 sm:gap-4 min-h-0">
-        {/* 左侧 3 列：xterm.js 终端视口 */}
+        {/* 左侧 3 列：xterm.js 终端视口 + 时间轴回放播放条 */}
         <div className="relative lg:col-span-3 flex flex-col rounded-xl border border-slate-800 bg-[#090d16] overflow-hidden shadow-inner">
           <div className="flex items-center justify-between px-3 sm:px-4 py-2 border-b border-slate-800/80 bg-slate-900/40 text-xs text-slate-400 font-mono">
             <div className="flex items-center space-x-2">
@@ -200,10 +226,23 @@ export const TerminalViewer: React.FC<TerminalViewerProps> = ({ detail, onBack }
             onClick={handleScrollToBottom}
             aria-label="Scroll to Bottom"
             title="Scroll to Bottom"
-            className="absolute bottom-4 right-4 z-10 flex items-center justify-center w-11 h-11 rounded-full bg-slate-800/90 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 shadow-xl active:scale-95 transition"
+            className="absolute bottom-20 right-4 z-10 flex items-center justify-center w-11 h-11 rounded-full bg-slate-800/90 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 shadow-xl active:scale-95 transition"
           >
             <ChevronDown className="w-5 h-5" />
           </button>
+
+          {/* 底部历史回放控制条 */}
+          {snapshots.length > 0 && (
+            <div className="p-2 border-t border-slate-800/80 bg-slate-950/80">
+              <PlaybackBar
+                snapshots={snapshots}
+                isLive={isLive}
+                activeSnapshotId={activeSnapshotId}
+                onSelectSnapshot={selectSnapshot}
+                onReturnToLive={returnToLive}
+              />
+            </div>
+          )}
         </div>
 
         {/* 右侧 1 列：进程树与元数据 */}

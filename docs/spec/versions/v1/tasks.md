@@ -185,13 +185,13 @@
 
 ---
 
-- [ ] **TASK-009 · Web 总览卡片墙与多维状态筛选**
+- [x] **TASK-009 · Web 总览卡片墙与多维状态筛选**
 
   > 依赖：TASK-008
 
-  - [ ] 开发 `OverviewGrid` 响应式网格容器组件
-  - [ ] 开发 `PaneCard` 组件：渲染 Session/Window 标题、Pane ID、Agent Badge、色彩编码状态指示灯、空闲时间与末尾 ANSI 预览
-  - [ ] 开发 `FilterBar` 状态快速过滤导航与各状态实时计数徽章
+  - [x] 开发 `OverviewGrid` 响应式网格容器组件
+  - [x] 开发 `PaneCard` 组件：渲染 Session/Window 标题、Pane ID、Agent Badge、色彩编码状态指示灯、空闲时间与末尾 ANSI 预览
+  - [x] 开发 `FilterBar` 状态快速过滤导航与各状态实时计数徽章
 
   **验证方式：**
   ```bash

@@ -120,14 +120,14 @@
 
 ---
 
-- [ ] **TASK-006 · 后端 HTTP REST API 与 Token 认证中间件**
+- [x] **TASK-006 · 后端 HTTP REST API 与 Token 认证中间件**
 
   > 依赖：TASK-005
 
-  - [ ] 基于 Chi 路由实现 `GET /api/v1/health` 与 `GET /api/v1/config/agents`
-  - [ ] 实现 `GET /api/v1/panes` 列表查询与 status/session 过滤
-  - [ ] 实现 `GET /api/v1/panes/{id}` 宽容路由参数解析（支持裸数字 `1` 自动规整为 `%1` 及 `%251` URL 解码）
-  - [ ] 实现可选 Bearer Token 鉴权中间件与统一标准 JSON 错误响应规范
+  - [x] 基于 Chi 路由实现 `GET /api/v1/health` 与 `GET /api/v1/config/agents`
+  - [x] 实现 `GET /api/v1/panes` 列表查询与 status/session 过滤
+  - [x] 实现 `GET /api/v1/panes/{id}` 宽容路由参数解析（支持裸数字 `1` 自动规整为 `%1` 及 `%251` URL 解码）
+  - [x] 实现可选 Bearer Token 鉴权中间件与统一标准 JSON 错误响应规范
 
   **验证方式：**
   ```bash
@@ -279,7 +279,7 @@
 | TASK-003 | 跨平台进程树探测器与 Agent 进程关联 | Unit | 🟢 done | v1.REQ-001 |
 | TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | Unit | 🟢 done | v1.REQ-002 |
 | TASK-005 | 多智能体状态判定引擎与内存存储 | Unit | 🟢 done | v1.REQ-003 |
-| TASK-006 | 后端 HTTP REST API 与 Token 认证中间件 | API | ⬜ 待开始 | v1.REQ-005 |
+| TASK-006 | 后端 HTTP REST API 与 Token 认证中间件 | API | 🟢 done | v1.REQ-005 |
 | TASK-007 | WebSocket Hub 实时推流服务 | API | ⬜ 待开始 | v1.REQ-005 |
 | TASK-008 | 前端 Vite 脚手架与 WebSocket 通信 Hook | Unit | ⬜ 待开始 | v1.REQ-006 |
 | TASK-009 | Web 总览卡片墙与多维状态筛选 | E2E | ⬜ 待开始 | v1.REQ-006 |

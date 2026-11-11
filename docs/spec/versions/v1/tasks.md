@@ -206,14 +206,14 @@
 
 ---
 
-- [ ] **TASK-010 · 终端详情页与 xterm.js ANSI 渲染器**
+- [x] **TASK-010 · 终端详情页与 xterm.js ANSI 渲染器**
 
   > 依赖：TASK-008, TASK-009
 
-  - [ ] 安装并配置 `@xterm/xterm` 与 `@xterm/addon-fit`
-  - [ ] 开发 `TerminalViewer` 组件，挂载 xterm.js 实例并渲染全量 ANSI 彩色字符流
-  - [ ] 实现终端自适应容器大小（Resize / FitAddon）与严格只读保护（禁用键盘输入并提示 Read-Only）
-  - [ ] 配置前端路由支持 `/panes/:id` 导航与数据拉取
+  - [x] 安装并配置 `@xterm/xterm` 与 `@xterm/addon-fit`
+  - [x] 开发 `TerminalViewer` 组件，挂载 xterm.js 实例并渲染全量 ANSI 彩色字符流
+  - [x] 实现终端自适应容器大小（Resize / FitAddon）与严格只读保护（禁用键盘输入并提示 Read-Only）
+  - [x] 配置前端路由支持 `/panes/:id` 导航与数据拉取
 
   **验证方式：**
   ```bash

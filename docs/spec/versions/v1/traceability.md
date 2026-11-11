@@ -34,7 +34,7 @@
 | TASK-007 | WebSocket Hub 实时推流服务 | v1.REQ-005 / AC-003 | done | `internal/server/ws_hub.go`, `internal/server/http_server.go` | `internal/server/ws_hub_test.go` | `docs/spec/versions/v1/ac/TASK-007-AC.md` | 2026-11-11 |
 | TASK-008 | 前端 Vite 脚手架与 WebSocket 通信 Hook | v1.REQ-006 / AC-001 | done | `web/src/hooks/useTmuxWS.ts`, `web/src/types/index.ts` | `web/src/hooks/useTmuxWS.test.ts` | `docs/spec/versions/v1/ac/TASK-008-AC.md` | 2026-11-11 |
 | TASK-009 | Web 总览卡片墙与多维状态筛选 | v1.REQ-006 / AC-001, AC-002 | done | `web/src/components/OverviewGrid.tsx`, `web/src/components/PaneCard.tsx`, `web/src/components/FilterBar.tsx` | `web/src/components/OverviewGrid.test.tsx` | `docs/spec/versions/v1/ac/TASK-009-AC.md` | 2026-11-11 |
-| TASK-010 | 终端详情页与 xterm.js ANSI 渲染器 | v1.REQ-007 / AC-001, AC-003 | 待开始 | — | — | — | — |
+| TASK-010 | 终端详情页与 xterm.js ANSI 渲染器 | v1.REQ-007 / AC-001, AC-003 | done | `web/src/components/TerminalViewer.tsx` | `web/src/components/TerminalViewer.test.tsx` | `docs/spec/versions/v1/ac/TASK-010-AC.md` | 2026-11-11 |
 | TASK-011 | 状态变迁时间线抽屉与浏览器交互通知 | v1.REQ-006, v1.REQ-007 / AC-003, AC-002 | 待开始 | — | — | — | — |
 | TASK-012 | 前端静态资源 Embed 内嵌与单二进制集成验收 | v1.REQ-001, v1.REQ-005, v1.REQ-006 / AC-005, AC-001, AC-001 | 待开始 | — | — | — | — |
 

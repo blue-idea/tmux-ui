@@ -36,14 +36,14 @@
 
 ---
 
-- [ ] **TASK-014 · 状态变迁快照挂钩与周期性保底 Checkpoint**
+- [x] **TASK-014 · 状态变迁快照挂钩与周期性保底 Checkpoint**
 
   > 依赖：TASK-013
 
-  - [ ] 在 `internal/history` 中实现 `HistoryEngine`：挂载至 `StateStore` 变迁监听通道
-  - [ ] 当目标 Pane 发生状态变迁事件（`state_changed`）时，自动触发创建快照并持久化
-  - [ ] 实现周期性定时器（Checkpoint Ticker，默认 30s）：输出内容有哈希变动但未触发状态跃迁时生成保底快照
-  - [ ] 实现 Pane 销毁后的快照缓存安全保留与保留期 TTL 检查
+  - [x] 在 `internal/history` 中实现 `HistoryEngine`：挂载至 `StateStore` 变迁监听通道
+  - [x] 当目标 Pane 发生状态变迁事件（`state_changed`）时，自动触发创建快照并持久化
+  - [x] 实现周期性定时器（Checkpoint Ticker，默认 30s）：输出内容有哈希变动但未触发状态跃迁时生成保底快照
+  - [x] 实现 Pane 销毁后的快照缓存安全保留与保留期 TTL 检查
 
   **验证方式：**
   ```bash
@@ -173,7 +173,7 @@
 | TASK ID | 名称 | 测试类型 | 状态 | 关联需求 |
 |---------|------|:-------:|:----:|---------|
 | TASK-013 | 历史快照数据模型与本地 JSONL 持久化引擎 | Unit | 🟢 done | v2.REQ-001 |
-| TASK-014 | 状态变迁快照挂钩与周期性保底 Checkpoint | Unit | ⚪ 待开始 | v2.REQ-001 |
+| TASK-014 | 状态变迁快照挂钩与周期性保底 Checkpoint | Unit | 🟢 done | v2.REQ-001 |
 | TASK-015 | 历史快照 REST API 与 WebSocket 广播扩展 | API | ⚪ 待开始 | v2.REQ-002 |
 | TASK-016 | 移动端视口探测 Hook 与响应式卡片墙重塑 | E2E | ⚪ 待开始 | v2.REQ-004 |
 | TASK-017 | 移动端 Bottom Sheet 抽屉与终端触控交互优化 | E2E | ⚪ 待开始 | v2.REQ-005 |

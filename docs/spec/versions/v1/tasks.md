@@ -164,13 +164,13 @@
 
 ---
 
-- [ ] **TASK-008 · 前端 Vite 脚手架与 WebSocket 通信 Hook**
+- [x] **TASK-008 · 前端 Vite 脚手架与 WebSocket 通信 Hook**
 
   > 依赖：TASK-007
 
-  - [ ] 使用 Vite + React + Tailwind CSS + TypeScript 初始化 `web/` 工程并配置严格类型规范
-  - [ ] 声明前端核心 TypeScript 接口定义（`PaneSummary`, `PaneDetail`, `TimelineEvent`）
-  - [ ] 实现 `useTmuxWS` Hook（自动断线重连、快照同步、局部状态更新）
+  - [x] 使用 Vite + React + Tailwind CSS + TypeScript 初始化 `web/` 工程并配置严格类型规范
+  - [x] 声明前端核心 TypeScript 接口定义（`PaneSummary`, `PaneDetail`, `TimelineEvent`）
+  - [x] 实现 `useTmuxWS` Hook（自动断线重连、快照同步、局部状态更新）
 
   **验证方式：**
   ```bash

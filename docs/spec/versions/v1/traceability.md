@@ -32,7 +32,7 @@
 | TASK-005 | 多智能体状态判定引擎与内存存储 | v1.REQ-003 / AC-001, AC-002, AC-003, AC-004, AC-005 | done | `internal/detector/engine.go`, `internal/store/*.go` | `internal/detector/engine_test.go`, `internal/store/memory_store_test.go` | `docs/spec/versions/v1/ac/TASK-005-AC.md` | 2026-11-11 |
 | TASK-006 | 后端 HTTP REST API 与 Token 认证中间件 | v1.REQ-005 / AC-001, AC-002, AC-004 | done | `internal/server/http_server.go` | `internal/server/http_server_test.go` | `docs/spec/versions/v1/ac/TASK-006-AC.md` | 2026-11-11 |
 | TASK-007 | WebSocket Hub 实时推流服务 | v1.REQ-005 / AC-003 | done | `internal/server/ws_hub.go`, `internal/server/http_server.go` | `internal/server/ws_hub_test.go` | `docs/spec/versions/v1/ac/TASK-007-AC.md` | 2026-11-11 |
-| TASK-008 | 前端 Vite 脚手架与 WebSocket 通信 Hook | v1.REQ-006 / AC-001 | 待开始 | — | — | — | — |
+| TASK-008 | 前端 Vite 脚手架与 WebSocket 通信 Hook | v1.REQ-006 / AC-001 | done | `web/src/hooks/useTmuxWS.ts`, `web/src/types/index.ts` | `web/src/hooks/useTmuxWS.test.ts` | `docs/spec/versions/v1/ac/TASK-008-AC.md` | 2026-11-11 |
 | TASK-009 | Web 总览卡片墙与多维状态筛选 | v1.REQ-006 / AC-001, AC-002 | 待开始 | — | — | — | — |
 | TASK-010 | 终端详情页与 xterm.js ANSI 渲染器 | v1.REQ-007 / AC-001, AC-003 | 待开始 | — | — | — | — |
 | TASK-011 | 状态变迁时间线抽屉与浏览器交互通知 | v1.REQ-006, v1.REQ-007 / AC-003, AC-002 | 待开始 | — | — | — | — |

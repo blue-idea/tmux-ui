@@ -56,13 +56,13 @@
 
 ---
 
-- [ ] **TASK-003 · 跨平台进程树探测器与 Agent 进程关联**
+- [x] **TASK-003 · 跨平台进程树探测器与 Agent 进程关联**
 
   > 依赖：TASK-001, TASK-002
 
-  - [ ] 实现跨平台兼容命令 `ps -axo pid=,ppid=,command=` 执行与输出流解析器
-  - [ ] 实现从 PID/PPID 构造树状进程层级关系（`ProcessInfo`）算法
-  - [ ] 根据 Pane 根 PID，递归遍历提取子进程列表，并与 `AgentRule.MatchProcess` 进行规则匹配
+  - [x] 实现跨平台兼容命令 `ps -axo pid=,ppid=,command=` 执行与输出流解析器
+  - [x] 实现从 PID/PPID 构造树状进程层级关系（`ProcessInfo`）算法
+  - [x] 根据 Pane 根 PID，递归遍历提取子进程列表，并与 `AgentRule.MatchProcess` 进行规则匹配
 
   **验证方式：**
   ```bash
@@ -276,7 +276,7 @@
 |---------|------|:-------:|:----:|---------|
 | TASK-001 | 项目基础脚手架、配置模型与解析器 | Unit | 🟢 done | v1.REQ-004 |
 | TASK-002 | Tmux CLI 采集器与版本探测兼容 | Unit | 🟢 done | v1.REQ-001 |
-| TASK-003 | 跨平台进程树探测器与 Agent 进程关联 | Unit | ⬜ 待开始 | v1.REQ-001 |
+| TASK-003 | 跨平台进程树探测器与 Agent 进程关联 | Unit | 🟢 done | v1.REQ-001 |
 | TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | Unit | ⬜ 待开始 | v1.REQ-002 |
 | TASK-005 | 多智能体状态判定引擎与内存存储 | Unit | ⬜ 待开始 | v1.REQ-003 |
 | TASK-006 | 后端 HTTP REST API 与 Token 认证中间件 | API | ⬜ 待开始 | v1.REQ-005 |

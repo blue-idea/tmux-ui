@@ -1,0 +1,32 @@
+# Sensitive SDD Info
+docs/spec/info.md
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.test
+
+# Go artifacts
+bin/
+dist/
+*.exe
+*.test
+*.out
+coverage.html
+
+# Node / Frontend artifacts
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+web/dist/
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+

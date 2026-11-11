@@ -228,13 +228,13 @@
 
 ---
 
-- [ ] **TASK-011 · 状态变迁时间线抽屉与浏览器交互通知**
+- [x] **TASK-011 · 状态变迁时间线抽屉与浏览器交互通知**
 
   > 依赖：TASK-009, TASK-010
 
-  - [ ] 开发 `TimelineDrawer` 抽屉组件，按时间正序展示状态迁移节点（时间戳、迁移原因、规则匹配摘要）
-  - [ ] 实现 `useNotifications` Hook 请求浏览器桌面通知权限
-  - [ ] 当智能体状态跃迁为 `waiting_input` 或 `error` 时触发系统级桌面通知
+  - [x] 开发 `TimelineDrawer` 抽屉组件，按时间正序展示状态迁移节点（时间戳、迁移原因、规则匹配摘要）
+  - [x] 实现 `useNotifications` Hook 请求浏览器桌面通知权限
+  - [x] 当智能体状态跃迁为 `waiting_input` 或 `error` 时触发系统级桌面通知
 
   **验证方式：**
   ```bash

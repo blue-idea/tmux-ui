@@ -4,6 +4,7 @@ import { FitAddon } from '@xterm/addon-fit'
 import '@xterm/xterm/css/xterm.css'
 import type { PaneDetail } from '@/types'
 import { StatusBadge } from './StatusBadge'
+import { TimelineDrawer } from './TimelineDrawer'
 import {
   ArrowLeft,
   Lock,
@@ -13,6 +14,7 @@ import {
   Layers,
   Clock,
   Terminal as TermIcon,
+  History,
 } from 'lucide-react'
 
 interface TerminalViewerProps {
@@ -25,6 +27,7 @@ export const TerminalViewer: React.FC<TerminalViewerProps> = ({ detail, onBack }
   const termRef = useRef<Terminal | null>(null)
   const fitAddonRef = useRef<FitAddon | null>(null)
   const [copied, setCopied] = useState(false)
+  const [isTimelineOpen, setIsTimelineOpen] = useState(false)
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -131,6 +134,20 @@ export const TerminalViewer: React.FC<TerminalViewerProps> = ({ detail, onBack }
             <span>Read-Only Mode</span>
           </div>
 
+          {/* 时间线抽屉切换 */}
+          <button
+            onClick={() => setIsTimelineOpen(true)}
+            className="flex items-center space-x-1 px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition border border-slate-700/60"
+          >
+            <History className="w-3.5 h-3.5 text-blue-400" />
+            <span>Timeline</span>
+            {detail.timeline && detail.timeline.length > 0 && (
+              <span className="rounded-full bg-blue-500/20 text-blue-400 text-[10px] px-1.5 py-0.2 font-mono">
+                {detail.timeline.length}
+              </span>
+            )}
+          </button>
+
           {/* 复制输出 */}
           <button
             onClick={handleCopy}
@@ -230,6 +247,13 @@ export const TerminalViewer: React.FC<TerminalViewerProps> = ({ detail, onBack }
           </div>
         </div>
       </div>
+
+      {/* 状态变迁时间线抽屉 */}
+      <TimelineDrawer
+        isOpen={isTimelineOpen}
+        onClose={() => setIsTimelineOpen(false)}
+        events={detail.timeline || []}
+      />
     </div>
   )
 }

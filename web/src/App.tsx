@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useTmuxWS } from './hooks/useTmuxWS'
+import { useNotifications } from './hooks/useNotifications'
 import { OverviewGrid } from './components/OverviewGrid'
 import { TerminalViewer } from './components/TerminalViewer'
 import type { PaneDetail } from './types'
-import { Terminal, Activity, Wifi, WifiOff } from 'lucide-react'
+import { Terminal, Activity, Wifi, WifiOff, Bell, BellRing } from 'lucide-react'
 
 export const App: React.FC = () => {
-  const { status, panes } = useTmuxWS()
+  const { status, panes, lastEvent } = useTmuxWS()
+  const { permission, requestPermission } = useNotifications({ lastEvent })
   const [selectedPaneId, setSelectedPaneId] = useState<string | null>(null)
   const [paneDetail, setPaneDetail] = useState<PaneDetail | null>(null)
 
@@ -72,7 +74,29 @@ export const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
+            {/* 浏览器桌面通知开关 */}
+            <button
+              onClick={requestPermission}
+              title={
+                permission === 'granted'
+                  ? 'Desktop notifications enabled'
+                  : 'Click to enable desktop notifications'
+              }
+              className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition ${
+                permission === 'granted'
+                  ? 'bg-slate-900 border-slate-700 text-slate-300'
+                  : 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
+              }`}
+            >
+              {permission === 'granted' ? (
+                <BellRing className="w-3.5 h-3.5 text-blue-400" />
+              ) : (
+                <Bell className="w-3.5 h-3.5 text-amber-400" />
+              )}
+              <span>{permission === 'granted' ? 'Notify On' : 'Enable Notify'}</span>
+            </button>
+
             <div className="flex items-center space-x-2 text-xs text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg">
               <Activity className="w-3.5 h-3.5 text-blue-400" />
               <span>Panes:</span>

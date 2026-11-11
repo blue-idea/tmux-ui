@@ -13,13 +13,13 @@
 
 ---
 
-- [ ] **TASK-001 · 项目基础脚手架、配置模型与解析器**
+- [x] **TASK-001 · 项目基础脚手架、配置模型与解析器**
 
   > 依赖：无
 
-  - [ ] 初始化 Go 模块（`go.mod`）与基本目录架构（`cmd/`, `internal/`, `config/`）
-  - [ ] 实现领域实体模型 `internal/model`（`State` 枚举、`PaneSummary`、`PaneDetail`、`TimelineEvent`、`AgentRule`）
-  - [ ] 编写 `internal/config` 加载并解析 `config/agents.yaml`，实现默认内置规则降级兜底
+  - [x] 初始化 Go 模块（`go.mod`）与基本目录架构（`cmd/`, `internal/`, `config/`）
+  - [x] 实现领域实体模型 `internal/model`（`State` 枚举、`PaneSummary`、`PaneDetail`、`TimelineEvent`、`AgentRule`）
+  - [x] 编写 `internal/config` 加载并解析 `config/agents.yaml`，实现默认内置规则降级兜底
 
   **验证方式：**
   ```bash
@@ -274,7 +274,7 @@
 
 | TASK ID | 名称 | 测试类型 | 状态 | 关联需求 |
 |---------|------|:-------:|:----:|---------|
-| TASK-001 | 项目基础脚手架、配置模型与解析器 | Unit | ⬜ 待开始 | v1.REQ-004 |
+| TASK-001 | 项目基础脚手架、配置模型与解析器 | Unit | 🟢 done | v1.REQ-004 |
 | TASK-002 | Tmux CLI 采集器与版本探测兼容 | Unit | ⬜ 待开始 | v1.REQ-001 |
 | TASK-003 | 跨平台进程树探测器与 Agent 进程关联 | Unit | ⬜ 待开始 | v1.REQ-001 |
 | TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | Unit | ⬜ 待开始 | v1.REQ-002 |

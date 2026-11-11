@@ -1,0 +1,46 @@
+# tmux-ui 全局配置文件
+
+collector:
+  socket_name: ""              # 自定义 tmux socket 名（对应 tmux -L）
+  socket_path: ""              # 自定义 tmux socket 绝对路径（对应 tmux -S）
+  poll_interval_ms: 800        # 拓扑轮询间隔（毫秒）
+  capture_tail_lines: 50       # 用于状态判定匹配的终端末尾行数
+  max_buffer_bytes: 524288     # 单个 Pane 最大缓存输出（512KB）
+  inactivity_timeout_s: 15     # 输出无变动判定为 idle 的超时阈值（秒）
+
+agents:
+  - name: "claude-code"
+    match_process: ["claude", "node"]
+    states:
+      working:
+        tail_regex: "esc to interrupt|Thinking\\.\\.\\."
+      waiting_input:
+        tail_regex: "Do you want to proceed\\?|\\(y/n\\)|Allow this action\\?"
+      error:
+        tail_regex: "Error:|fatal:|Process exited with code [1-9]"
+
+  - name: "codex"
+    match_process: ["codex"]
+    states:
+      working:
+        tail_regex: "Generating|Executing command"
+      waiting_input:
+        tail_regex: "Confirm execution\\? \\[Y/n\\]"
+      error:
+        tail_regex: "Failed to generate|Exception:"
+
+  - name: "gemini-cli"
+    match_process: ["gemini"]
+    states:
+      working:
+        tail_regex: "Thinking\\.\\.\\."
+      waiting_input:
+        tail_regex: "Press Enter to continue|Confirm \\(yes/no\\):"
+
+  - name: "aider"
+    match_process: ["aider", "python"]
+    states:
+      working:
+        tail_regex: "Tokens: [0-9]+|Thinking"
+      waiting_input:
+        tail_regex: "Apply these changes\\?|Run shell command\\?"

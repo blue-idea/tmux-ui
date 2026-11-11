@@ -142,14 +142,14 @@
 
 ---
 
-- [ ] **TASK-007 · WebSocket Hub 实时推流服务**
+- [x] **TASK-007 · WebSocket Hub 实时推流服务**
 
   > 依赖：TASK-005, TASK-006
 
-  - [ ] 实现 WebSocket 协议升级、Query Token 鉴权与 Client 连接管理 Hub
-  - [ ] 实现客户端连入后立即下发 `snapshot` 全量快照
-  - [ ] 接入 StateStore 变迁广播通道，向客户端推流 `pane_updated`、`state_changed` 与 `output_diff`
-  - [ ] 实现 `ping` / `pong` 心跳保活与异常断开清理机制
+  - [x] 实现 WebSocket 协议升级、Query Token 鉴权与 Client 连接管理 Hub
+  - [x] 实现客户端连入后立即下发 `snapshot` 全量快照
+  - [x] 接入 StateStore 变迁广播通道，向客户端推流 `pane_updated`、`state_changed` 与 `output_diff`
+  - [x] 实现 `ping` / `pong` 心跳保活与异常断开清理机制
 
   **验证方式：**
   ```bash

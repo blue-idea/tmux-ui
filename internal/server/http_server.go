@@ -19,6 +19,7 @@ type HTTPServerOptions struct {
 	Config      *model.Config
 	AuthToken   string
 	TmuxVersion string
+	WSHub       *WSHub
 }
 
 // HTTPServer 提供 REST API 服务与路由分发
@@ -29,6 +30,7 @@ type HTTPServer struct {
 	authToken   string
 	tmuxVersion string
 	startTime   time.Time
+	wsHub       *WSHub
 }
 
 // NewHTTPServer 构造并初始化路由规则
@@ -38,6 +40,12 @@ func NewHTTPServer(opts HTTPServerOptions) *HTTPServer {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
 
+	hub := opts.WSHub
+	if hub == nil {
+		hub = NewWSHub(opts.Store, opts.AuthToken)
+		go hub.Run()
+	}
+
 	s := &HTTPServer{
 		router:      r,
 		store:       opts.Store,
@@ -45,6 +53,7 @@ func NewHTTPServer(opts HTTPServerOptions) *HTTPServer {
 		authToken:   opts.AuthToken,
 		tmuxVersion: opts.TmuxVersion,
 		startTime:   time.Now(),
+		wsHub:       hub,
 	}
 
 	s.setupRoutes()
@@ -56,7 +65,15 @@ func (s *HTTPServer) Router() chi.Router {
 	return s.router
 }
 
+// WSHub 返回内部 WebSocket Hub 实例
+func (s *HTTPServer) WSHub() *WSHub {
+	return s.wsHub
+}
+
 func (s *HTTPServer) setupRoutes() {
+	// WebSocket 实时全双工连接
+	s.router.Get("/ws", s.wsHub.HandleWS)
+
 	s.router.Route("/api/v1", func(r chi.Router) {
 		// 健康检查无需 Token 鉴权
 		r.Get("/health", s.handleHealth)

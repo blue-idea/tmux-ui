@@ -44,3 +44,4 @@ agents:
         tail_regex: "Tokens: [0-9]+|Thinking"
       waiting_input:
         tail_regex: "Apply these changes\\?|Run shell command\\?"
+

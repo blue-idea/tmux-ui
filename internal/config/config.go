@@ -113,3 +113,4 @@ func Load(path string) (*model.Config, error) {
 
 	return &cfg, nil
 }
+

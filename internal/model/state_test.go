@@ -27,3 +27,4 @@ func TestState_IsValid(t *testing.T) {
 		t.Errorf("状态 %s 应该是非法的", invalidState)
 	}
 }
+

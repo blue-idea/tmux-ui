@@ -27,3 +27,4 @@ type Config struct {
 	Collector CollectorConfig `yaml:"collector" json:"collector"`
 	Agents    []AgentRule     `yaml:"agents" json:"agents"`
 }
+

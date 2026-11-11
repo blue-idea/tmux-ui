@@ -39,3 +39,4 @@ PASS
 coverage: 100.0% of statements
 ok  	tmux-ui/internal/model	0.069s	coverage: 100.0% of statements
 ```
+

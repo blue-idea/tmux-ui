@@ -43,3 +43,4 @@ type TimelineEvent struct {
 	ToState     State     `json:"to_state"`
 	TriggerRule string    `json:"trigger_rule"` // 触发原因
 }
+

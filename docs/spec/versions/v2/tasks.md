@@ -80,14 +80,14 @@
 
 ---
 
-- [ ] **TASK-016 · 移动端视口探测 Hook 与响应式卡片墙重塑**
+- [x] **TASK-016 · 移动端视口探测 Hook 与响应式卡片墙重塑**
 
   > 依赖：TASK-015
 
-  - [ ] 实现 `web/src/hooks/useMediaQuery.ts`，提供可复用的小屏视口侦测能力（`< 768px` 判定）
-  - [ ] 重构 `web/src/App.tsx` 顶部 Header：在移动端紧凑排布标题与状态指示器，消除任何横向滚动溢出
-  - [ ] 重构 `web/src/components/FilterBar.tsx`：支持触控横向平滑滚动标签（Touch Scroll），搜索输入框在手机端自适应 100% 宽度
-  - [ ] 重构 `web/src/components/OverviewGrid.tsx` 与 `PaneCard.tsx`：小屏幕下自动平滑过渡为单列紧凑卡片，标签与 ANSI 预览换行对齐
+  - [x] 实现 `web/src/hooks/useMediaQuery.ts`，提供可复用的小屏视口侦测能力（`< 768px` 判定）
+  - [x] 重构 `web/src/App.tsx` 顶部 Header：在移动端紧凑排布标题与状态指示器，消除任何横向滚动溢出
+  - [x] 重构 `web/src/components/FilterBar.tsx`：支持触控横向平滑滚动标签（Touch Scroll），搜索输入框在手机端自适应 100% 宽度
+  - [x] 重构 `web/src/components/OverviewGrid.tsx` 与 `PaneCard.tsx`：小屏幕下自动平滑过渡为单列紧凑卡片，标签与 ANSI 预览换行对齐
 
   **验证方式：**
   ```bash
@@ -175,7 +175,7 @@
 | TASK-013 | 历史快照数据模型与本地 JSONL 持久化引擎 | Unit | 🟢 done | v2.REQ-001 |
 | TASK-014 | 状态变迁快照挂钩与周期性保底 Checkpoint | Unit | 🟢 done | v2.REQ-001 |
 | TASK-015 | 历史快照 REST API 与 WebSocket 广播扩展 | API | 🟢 done | v2.REQ-002 |
-| TASK-016 | 移动端视口探测 Hook 与响应式卡片墙重塑 | E2E | ⚪ 待开始 | v2.REQ-004 |
+| TASK-016 | 移动端视口探测 Hook 与响应式卡片墙重塑 | E2E | 🟢 done | v2.REQ-004 |
 | TASK-017 | 移动端 Bottom Sheet 抽屉与终端触控交互优化 | E2E | ⚪ 待开始 | v2.REQ-005 |
 | TASK-018 | 终端详情页时间轴回放播放器与 Live 追踪切换 | E2E | ⚪ 待开始 | v2.REQ-003 |
 | TASK-019 | 前端静态产物内嵌与 v2 全链路回归验收 | E2E | ⚪ 待开始 | v2.REQ-001 ~ v2.REQ-005 |

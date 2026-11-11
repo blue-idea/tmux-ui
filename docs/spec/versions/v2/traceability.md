@@ -28,7 +28,7 @@
 | **TASK-013** | 历史快照数据模型与本地 JSONL 持久化引擎 | v2.REQ-001 / AC-001, AC-002, AC-003 | done | `internal/model/snapshot.go`, `internal/history/storage.go` | `internal/history/storage_test.go` | `docs/spec/versions/v2/ac/TASK-013-AC.md` | 2026-11-12 |
 | **TASK-014** | 状态变迁快照挂钩与周期性保底 Checkpoint | v2.REQ-001 / AC-001, AC-003 | done | `internal/history/engine.go` | `internal/history/engine_test.go` | `docs/spec/versions/v2/ac/TASK-014-AC.md` | 2026-11-12 |
 | **TASK-015** | 历史快照 REST API 与 WebSocket 广播扩展 | v2.REQ-002 / AC-001, AC-002, AC-003 | done | `internal/server/http_server.go`, `internal/server/ws_hub.go` | `internal/server/snapshot_api_test.go` | `docs/spec/versions/v2/ac/TASK-015-AC.md` | 2026-11-12 |
-| **TASK-016** | 移动端视口探测 Hook 与响应式卡片墙重塑 | v2.REQ-004 / AC-001, AC-002, AC-003 | 待开始 | — | — | — | — |
+| **TASK-016** | 移动端视口探测 Hook 与响应式卡片墙重塑 | v2.REQ-004 / AC-001, AC-002, AC-003 | done | `web/src/hooks/useMediaQuery.ts`, `web/src/components/FilterBar.tsx`, `web/src/App.tsx` | `web/src/hooks/useMediaQuery.test.ts`, Playwright E2E | `docs/spec/versions/v2/ac/TASK-016-AC.md` | 2026-11-12 |
 | **TASK-017** | 移动端 Bottom Sheet 抽屉与终端触控交互优化 | v2.REQ-005 / AC-001, AC-002 | 待开始 | — | — | — | — |
 | **TASK-018** | 终端详情页时间轴回放播放器与 Live 追踪切换 | v2.REQ-003 / AC-001, AC-002, AC-003 | 待开始 | — | — | — | — |
 | **TASK-019** | 前端产物内嵌与 v2 全链路回归验收 | 全部 v2.REQ-001 ~ v2.REQ-005 | 待开始 | — | — | — | — |

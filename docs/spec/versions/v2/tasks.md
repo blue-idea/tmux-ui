@@ -146,14 +146,14 @@
 
 ---
 
-- [ ] **TASK-019 · 前端静态产物内嵌与 v2 全链路回归验收**
+- [x] **TASK-019 · 前端静态产物内嵌与 v2 全链路回归验收**
 
   > 依赖：TASK-013, TASK-014, TASK-015, TASK-016, TASK-017, TASK-018
 
-  - [ ] 执行前端生产打包 `pnpm --prefix web build`
-  - [ ] 构建包含 v2 新特性的 Go 单二进制程序 `bin/tmux-ui`
-  - [ ] 执行端到端全链路冒烟测试与桌面/移动端双视口视觉回归测试
-  - [ ] 汇总生成 `docs/spec/versions/v2/reports/acceptance-report-{{DATE}}.md` 交付报告
+  - [x] 执行前端生产打包 `pnpm --prefix web build`
+  - [x] 构建包含 v2 新特性的 Go 单二进制程序 `bin/tmux-ui`
+  - [x] 执行端到端全链路冒烟测试与桌面/移动端双视口视觉回归测试
+  - [x] 汇总生成 `docs/spec/versions/v2/reports/acceptance-report-2026-11-12.md` 交付报告
 
   **验证方式：**
   ```bash
@@ -177,5 +177,5 @@
 | TASK-015 | 历史快照 REST API 与 WebSocket 广播扩展 | API | 🟢 done | v2.REQ-002 |
 | TASK-016 | 移动端视口探测 Hook 与响应式卡片墙重塑 | E2E | 🟢 done | v2.REQ-004 |
 | TASK-017 | 移动端 Bottom Sheet 抽屉与终端触控交互优化 | E2E | 🟢 done | v2.REQ-005 |
-| TASK-018 | 终端详情页时间轴回放播放器与 Live 追踪切换 | E2E | ⚪ 待开始 | v2.REQ-003 |
-| TASK-019 | 前端静态产物内嵌与 v2 全链路回归验收 | E2E | ⚪ 待开始 | v2.REQ-001 ~ v2.REQ-005 |
+| TASK-018 | 终端详情页时间轴回放播放器与 Live 追踪切换 | E2E | 🟢 done | v2.REQ-003 |
+| TASK-019 | 前端静态产物内嵌与 v2 全链路回归验收 | E2E | 🟢 done | v2.REQ-001 ~ v2.REQ-005 |

@@ -25,7 +25,7 @@
 
 | TASK ID | 任务名称 | REQ / AC | 状态 | 实现文件 | 测试文件 | AC 报告 | 完成日期 |
 |---------|---------|---------|:----:|---------|---------|---------|---------|
-| **TASK-013** | 历史快照数据模型与本地 JSONL 持久化引擎 | v2.REQ-001 / AC-001, AC-002, AC-003 | 待开始 | — | — | — | — |
+| **TASK-013** | 历史快照数据模型与本地 JSONL 持久化引擎 | v2.REQ-001 / AC-001, AC-002, AC-003 | done | `internal/model/snapshot.go`, `internal/history/storage.go` | `internal/history/storage_test.go` | `docs/spec/versions/v2/ac/TASK-013-AC.md` | 2026-11-12 |
 | **TASK-014** | 状态变迁快照挂钩与周期性保底 Checkpoint | v2.REQ-001 / AC-001, AC-003 | 待开始 | — | — | — | — |
 | **TASK-015** | 历史快照 REST API 与 WebSocket 广播扩展 | v2.REQ-002 / AC-001, AC-002, AC-003 | 待开始 | — | — | — | — |
 | **TASK-016** | 移动端视口探测 Hook 与响应式卡片墙重塑 | v2.REQ-004 / AC-001, AC-002, AC-003 | 待开始 | — | — | — | — |

@@ -13,15 +13,15 @@
 
 ---
 
-- [ ] **TASK-013 · 历史快照数据模型与本地 JSONL 持久化引擎**
+- [x] **TASK-013 · 历史快照数据模型与本地 JSONL 持久化引擎**
 
   > 依赖：无
 
-  - [ ] 在 `internal/model` 中定义 `SnapshotMetadata` 与 `SnapshotRecord` 领域实体
-  - [ ] 在 `internal/config` 中扩展加载 `history` 配置节点，提供开箱即用默认值降级
-  - [ ] 在 `internal/history` 中实现 `Storage` 模块：支持路径安全清洗（转义 `%` 等字符，防止路径穿越）
-  - [ ] 实现结构化追加写入 `.jsonl`、多协程并发写入锁安全与单 Pane 读写分离
-  - [ ] 实现 FIFO 滚动淘汰与自动裁剪机制（当记录数超过 `max_snapshots_per_pane` 或文件大小超限时原子重写文件）
+  - [x] 在 `internal/model` 中定义 `SnapshotMetadata` 与 `SnapshotRecord` 领域实体
+  - [x] 在 `internal/config` 中扩展加载 `history` 配置节点，提供开箱即用默认值降级
+  - [x] 在 `internal/history` 中实现 `Storage` 模块：支持路径安全清洗（转义 `%` 等字符，防止路径穿越）
+  - [x] 实现结构化追加写入 `.jsonl`、多协程并发写入锁安全与单 Pane 读写分离
+  - [x] 实现 FIFO 滚动淘汰与自动裁剪机制（当记录数超过 `max_snapshots_per_pane` 或文件大小超限时原子重写文件）
 
   **验证方式：**
   ```bash
@@ -172,7 +172,7 @@
 
 | TASK ID | 名称 | 测试类型 | 状态 | 关联需求 |
 |---------|------|:-------:|:----:|---------|
-| TASK-013 | 历史快照数据模型与本地 JSONL 持久化引擎 | Unit | ⚪ 待开始 | v2.REQ-001 |
+| TASK-013 | 历史快照数据模型与本地 JSONL 持久化引擎 | Unit | 🟢 done | v2.REQ-001 |
 | TASK-014 | 状态变迁快照挂钩与周期性保底 Checkpoint | Unit | ⚪ 待开始 | v2.REQ-001 |
 | TASK-015 | 历史快照 REST API 与 WebSocket 广播扩展 | API | ⚪ 待开始 | v2.REQ-002 |
 | TASK-016 | 移动端视口探测 Hook 与响应式卡片墙重塑 | E2E | ⚪ 待开始 | v2.REQ-004 |

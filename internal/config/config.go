@@ -8,6 +8,9 @@ import (
 	"tmux-ui/internal/model"
 )
 
+// HistoryConfig 历史持久化配置类型别名
+type HistoryConfig = model.HistoryConfig
+
 // DefaultConfig 返回内置的默认全局配置
 func DefaultConfig() *model.Config {
 	return &model.Config{
@@ -18,6 +21,14 @@ func DefaultConfig() *model.Config {
 			CaptureTailLines:   50,
 			MaxBufferBytes:     524288,
 			InactivityTimeoutS: 15,
+		},
+		History: model.HistoryConfig{
+			Enabled:             true,
+			StorageDir:          "data/history",
+			MaxSnapshotsPerPane: 200,
+			MaxBytesPerPane:     10485760, // 10MB
+			CheckpointIntervalS: 30,
+			RetentionHours:      48,
 		},
 		Agents: []model.AgentRule{
 			{
@@ -106,6 +117,23 @@ func Load(path string) (*model.Config, error) {
 		cfg.Collector.InactivityTimeoutS = 15
 	}
 
+	// 补全默认历史存储数值
+	if cfg.History.StorageDir == "" {
+		cfg.History.StorageDir = "data/history"
+	}
+	if cfg.History.MaxSnapshotsPerPane <= 0 {
+		cfg.History.MaxSnapshotsPerPane = 200
+	}
+	if cfg.History.MaxBytesPerPane <= 0 {
+		cfg.History.MaxBytesPerPane = 10485760
+	}
+	if cfg.History.CheckpointIntervalS <= 0 {
+		cfg.History.CheckpointIntervalS = 30
+	}
+	if cfg.History.RetentionHours <= 0 {
+		cfg.History.RetentionHours = 48
+	}
+
 	// 如果解析后未定义任何 agents，补充内置默认 agent 规则
 	if len(cfg.Agents) == 0 {
 		cfg.Agents = DefaultConfig().Agents
@@ -113,4 +141,3 @@ func Load(path string) (*model.Config, error) {
 
 	return &cfg, nil
 }
-

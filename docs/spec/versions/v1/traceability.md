@@ -29,7 +29,7 @@
 | TASK-002 | Tmux CLI 采集器与版本探测兼容 | v1.REQ-001 / AC-001, AC-003, AC-004, AC-005 | done | `internal/collector/tmux_cli.go` | `internal/collector/tmux_cli_test.go` | `docs/spec/versions/v1/ac/TASK-002-AC.md` | 2026-11-11 |
 | TASK-003 | 跨平台进程树探测器与 Agent 进程关联 | v1.REQ-001 / AC-002 | done | `internal/collector/process_tree.go` | `internal/collector/process_tree_test.go` | `docs/spec/versions/v1/ac/TASK-003-AC.md` | 2026-11-11 |
 | TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | v1.REQ-002 / AC-001, AC-002, AC-003 | done | `internal/collector/capture_pane.go` | `internal/collector/capture_pane_test.go` | `docs/spec/versions/v1/ac/TASK-004-AC.md` | 2026-11-11 |
-| TASK-005 | 多智能体状态判定引擎与内存存储 | v1.REQ-003 / AC-001, AC-002, AC-003, AC-004, AC-005 | 待开始 | — | — | — | — |
+| TASK-005 | 多智能体状态判定引擎与内存存储 | v1.REQ-003 / AC-001, AC-002, AC-003, AC-004, AC-005 | done | `internal/detector/engine.go`, `internal/store/*.go` | `internal/detector/engine_test.go`, `internal/store/memory_store_test.go` | `docs/spec/versions/v1/ac/TASK-005-AC.md` | 2026-11-11 |
 | TASK-006 | 后端 HTTP REST API 与 Token 认证中间件 | v1.REQ-005 / AC-001, AC-002, AC-004 | 待开始 | — | — | — | — |
 | TASK-007 | WebSocket Hub 实时推流服务 | v1.REQ-005 / AC-003 | 待开始 | — | — | — | — |
 | TASK-008 | 前端 Vite 脚手架与 WebSocket 通信 Hook | v1.REQ-006 / AC-001 | 待开始 | — | — | — | — |

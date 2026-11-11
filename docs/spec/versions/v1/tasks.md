@@ -99,13 +99,13 @@
 
 ---
 
-- [ ] **TASK-005 · 多智能体状态判定引擎与内存存储**
+- [x] **TASK-005 · 多智能体状态判定引擎与内存存储**
 
   > 依赖：TASK-003, TASK-004
 
-  - [ ] 实现多智能体状态决策链：`pane_dead` 优先 -> `waiting_input` 正则 -> `error` 正则 -> `working` 正则 -> 输出哈希活跃度 -> 纯 shell `idle`
-  - [ ] 实现线程安全 `StateStore`（基于 `sync.RWMutex` 保护）
-  - [ ] 实现上限 100 条记录的环形缓冲（RingBuffer）时间线事件存储，支持 10 分钟 TTL 销毁 pane 清理
+  - [x] 实现多智能体状态决策链：`pane_dead` 优先 -> `waiting_input` 正则 -> `error` 正则 -> `working` 正则 -> 输出哈希活跃度 -> 纯 shell `idle`
+  - [x] 实现线程安全 `StateStore`（基于 `sync.RWMutex` 保护）
+  - [x] 实现上限 100 条记录的环形缓冲（RingBuffer）时间线事件存储，支持 10 分钟 TTL 销毁 pane 清理
 
   **验证方式：**
   ```bash
@@ -278,7 +278,7 @@
 | TASK-002 | Tmux CLI 采集器与版本探测兼容 | Unit | 🟢 done | v1.REQ-001 |
 | TASK-003 | 跨平台进程树探测器与 Agent 进程关联 | Unit | 🟢 done | v1.REQ-001 |
 | TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | Unit | 🟢 done | v1.REQ-002 |
-| TASK-005 | 多智能体状态判定引擎与内存存储 | Unit | ⬜ 待开始 | v1.REQ-003 |
+| TASK-005 | 多智能体状态判定引擎与内存存储 | Unit | 🟢 done | v1.REQ-003 |
 | TASK-006 | 后端 HTTP REST API 与 Token 认证中间件 | API | ⬜ 待开始 | v1.REQ-005 |
 | TASK-007 | WebSocket Hub 实时推流服务 | API | ⬜ 待开始 | v1.REQ-005 |
 | TASK-008 | 前端 Vite 脚手架与 WebSocket 通信 Hook | Unit | ⬜ 待开始 | v1.REQ-006 |

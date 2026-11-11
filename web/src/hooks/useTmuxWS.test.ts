@@ -184,3 +184,4 @@ describe('useTmuxWS', () => {
     expect(MockWebSocket.instances.length).toBe(2)
   })
 })
+

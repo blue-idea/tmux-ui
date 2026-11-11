@@ -12,3 +12,4 @@ var distFS embed.FS
 func GetStaticFS() (fs.FS, error) {
 	return fs.Sub(distFS, "dist")
 }
+

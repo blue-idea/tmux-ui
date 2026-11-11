@@ -36,3 +36,4 @@ PASS
 coverage: 88.3% of statements
 ok  	tmux-ui/internal/server	0.740s	coverage: 88.3% of statements
 ```
+

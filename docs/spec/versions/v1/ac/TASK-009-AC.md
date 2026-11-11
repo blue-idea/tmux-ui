@@ -39,3 +39,4 @@
 - **截屏工具**：Playwright MCP (`playwright_navigate` + `playwright_screenshot`)
 - **证据文件**：`docs/spec/versions/v1/ac/screenshots/TASK-009-overview.png`
 - **页面视图**：包含导航条、连接状态指示器、状态多维筛选 Tab、实时搜索框与空状态 / 卡片网格视图。
+

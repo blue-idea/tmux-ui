@@ -255,3 +255,4 @@ func (c *WSClient) writePump() {
 		}
 	}
 }
+

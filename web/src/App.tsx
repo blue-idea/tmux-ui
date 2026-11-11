@@ -83,11 +83,10 @@ export const App: React.FC = () => {
                   ? 'Desktop notifications enabled'
                   : 'Click to enable desktop notifications'
               }
-              className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition ${
-                permission === 'granted'
+              className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition ${permission === 'granted'
                   ? 'bg-slate-900 border-slate-700 text-slate-300'
                   : 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
-              }`}
+                }`}
             >
               {permission === 'granted' ? (
                 <BellRing className="w-3.5 h-3.5 text-blue-400" />
@@ -104,13 +103,12 @@ export const App: React.FC = () => {
             </div>
 
             <div
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium ${
-                status === 'connected'
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium ${status === 'connected'
                   ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                   : status === 'connecting'
-                  ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
-                  : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-              }`}
+                    ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                    : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                }`}
             >
               {status === 'connected' ? (
                 <Wifi className="w-3.5 h-3.5" />

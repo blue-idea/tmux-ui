@@ -95,3 +95,4 @@ ok   tmux-ui/internal/store       coverage: 98.5% of statements
 ## 5. 验收结论
 
 > **综上，tmux-ui v1 版本的全部功能、架构规范、代码质量与交付标准均 100% 满足产品需求文档 `prd.md` 与工作区规范 `AGENTS.md`，正式通过质量验收，可供发布交付。**
+

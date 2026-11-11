@@ -65,3 +65,4 @@ export interface WSStateChangedPayload {
 }
 
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected';
+

@@ -75,3 +75,4 @@ export const PaneCard: React.FC<PaneCardProps> = ({ pane, onClick }) => {
     </div>
   )
 }
+

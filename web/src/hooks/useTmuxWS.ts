@@ -175,3 +175,4 @@ export function useTmuxWS(options: UseTmuxWSOptions = {}): UseTmuxWSReturn {
     reconnect,
   }
 }
+

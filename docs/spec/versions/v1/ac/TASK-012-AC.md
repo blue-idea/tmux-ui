@@ -92,3 +92,4 @@ Content-Type: text/html; charset=utf-8
 - **截屏工具**：Playwright MCP (`playwright_navigate` + `playwright_screenshot`)
 - **证据文件**：`docs/spec/versions/v1/ac/screenshots/TASK-012-standalone-binary.png`
 - **页面视图**：单二进制监听端口承载的完整自主多智能体可视化控制台界面。
+

@@ -42,3 +42,4 @@
 - **截屏工具**：Playwright MCP (`playwright_navigate` + `playwright_screenshot`)
 - **证据文件**：`docs/spec/versions/v1/ac/screenshots/TASK-011-timeline.png`
 - **页面视图**：包含导航栏通知权限开关指示、时间线抽屉面板与状态跃迁徽标。
+

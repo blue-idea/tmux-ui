@@ -127,3 +127,4 @@ describe('OverviewGrid & FilterBar', () => {
     expect(handleSelect).toHaveBeenCalledWith('%1')
   })
 })
+

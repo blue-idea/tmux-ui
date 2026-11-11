@@ -54,3 +54,4 @@ describe('TimelineDrawer', () => {
     expect(screen.getByText(/no transition events recorded/i)).toBeInTheDocument()
   })
 })
+

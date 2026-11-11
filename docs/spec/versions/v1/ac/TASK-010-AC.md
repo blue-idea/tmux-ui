@@ -40,3 +40,4 @@
 - **截屏工具**：Playwright MCP (`playwright_navigate` + `playwright_screenshot`)
 - **证据文件**：`docs/spec/versions/v1/ac/screenshots/TASK-010-terminal.png`
 - **页面视图**：包含返回总览导航、Pane 标题与状态灯、只读安全徽标、一键复制、xterm.js 暗黑终端视口与侧边进程树面板。
+

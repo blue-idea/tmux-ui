@@ -34,14 +34,14 @@
 
 ---
 
-- [ ] **TASK-002 · Tmux CLI 采集器与版本探测兼容**
+- [x] **TASK-002 · Tmux CLI 采集器与版本探测兼容**
 
   > 依赖：TASK-001
 
-  - [ ] 抽象 `TmuxExecutor` 接口以支持测试 Mock 注入
-  - [ ] 实现 `tmux -V` 版本检测与 format 格式自适应降级逻辑
-  - [ ] 实现 `tmux list-panes` 命令构建，支持命令行 `--socket-name` / `--socket-path` 及配置文件优先级覆盖
-  - [ ] 实现输出字符串解析器，安全捕获 tmux 未启动或 socket 不可达的 typed error（`ErrTmuxUnavailable`）
+  - [x] 抽象 `TmuxExecutor` 接口以支持测试 Mock 注入
+  - [x] 实现 `tmux -V` 版本检测与 format 格式自适应降级逻辑
+  - [x] 实现 `tmux list-panes` 命令构建，支持命令行 `--socket-name` / `--socket-path` 及配置文件优先级覆盖
+  - [x] 实现输出字符串解析器，安全捕获 tmux 未启动或 socket 不可达的 typed error（`ErrTmuxUnavailable`）
 
   **验证方式：**
   ```bash
@@ -275,7 +275,7 @@
 | TASK ID | 名称 | 测试类型 | 状态 | 关联需求 |
 |---------|------|:-------:|:----:|---------|
 | TASK-001 | 项目基础脚手架、配置模型与解析器 | Unit | 🟢 done | v1.REQ-004 |
-| TASK-002 | Tmux CLI 采集器与版本探测兼容 | Unit | ⬜ 待开始 | v1.REQ-001 |
+| TASK-002 | Tmux CLI 采集器与版本探测兼容 | Unit | 🟢 done | v1.REQ-001 |
 | TASK-003 | 跨平台进程树探测器与 Agent 进程关联 | Unit | ⬜ 待开始 | v1.REQ-001 |
 | TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | Unit | ⬜ 待开始 | v1.REQ-002 |
 | TASK-005 | 多智能体状态判定引擎与内存存储 | Unit | ⬜ 待开始 | v1.REQ-003 |

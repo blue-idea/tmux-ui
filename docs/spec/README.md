@@ -9,7 +9,7 @@
 ## 当前活跃 Version
 
 ```yaml
-current_version: v2
+current_version: v3
 ```
 
 ---
@@ -18,9 +18,9 @@ current_version: v2
 
 | Version | 状态 | 路径 | 说明 |
 |---------|:----:|------|------|
-| v1 | finished | `docs/spec/versions/v1-finished/` | 首个 version，已全部完成验收交付 |
-| v2 | active | `docs/spec/versions/v2/` | 当前活跃 version |
-| v3 | planned | `docs/spec/versions/v3/` | 待 v2 完成后启动 |
+| v1 | finished | `docs/spec/versions/v1-finished/` | 首个 version，基础拓扑采集、状态引擎与 Web 监控完成交付 |
+| v2 | finished | `docs/spec/versions/v2-finished/` | 历史快照持久化回放引擎与全设备响应式移动端自适应交付 |
+| v3 | planned | `docs/spec/versions/v3/` | 待启动新需求迭代 |
 
 > 完成一个 version 时：
 > 1. 将目录改名 `v1` → `v1-finished`

@@ -114,6 +114,18 @@ func (h *WSHub) Close() {
 	close(h.stopChan)
 }
 
+// BroadcastMessage 向所有连接的 WebSocket 客户端广播自定义消息（如 snapshot_created）
+func (h *WSHub) BroadcastMessage(msgType string, payload interface{}) {
+	select {
+	case h.broadcast <- WSMessage{
+		Type:      msgType,
+		Timestamp: time.Now(),
+		Payload:   payload,
+	}:
+	default:
+	}
+}
+
 // broadcastBytes 将消息序列化为 JSON 并分发给所有客户端
 func (h *WSHub) broadcastBytes(msg WSMessage) {
 	data, err := json.Marshal(msg)

@@ -14,6 +14,7 @@ import (
 	"tmux-ui/internal/collector"
 	"tmux-ui/internal/config"
 	"tmux-ui/internal/detector"
+	"tmux-ui/internal/history"
 	"tmux-ui/internal/model"
 	"tmux-ui/internal/server"
 	"tmux-ui/internal/store"
@@ -74,19 +75,26 @@ func main() {
 		tmuxVersion = v.Raw
 	}
 
-	// 3. 内嵌静态资源
+	// 3. 内嵌静态资源与初始化历史持久化引擎
 	staticFS, err := web.GetStaticFS()
 	if err != nil {
 		slog.Warn("Failed to load embedded web static filesystem", "error", err)
 	}
 
+	histStorage, err := history.NewJSONLStorage(cfg.History)
+	if err != nil {
+		slog.Error("Failed to initialize history storage", "error", err)
+	}
+	histEngine := history.NewHistoryEngine(cfg.History, histStorage, memStore)
+
 	// 4. 初始化 HTTP 与 WebSocket 服务
 	httpSrv := server.NewHTTPServer(server.HTTPServerOptions{
-		Store:       memStore,
-		Config:      cfg,
-		AuthToken:   *token,
-		TmuxVersion: tmuxVersion,
-		StaticFS:    staticFS,
+		Store:          memStore,
+		Config:         cfg,
+		AuthToken:      *token,
+		TmuxVersion:    tmuxVersion,
+		StaticFS:       staticFS,
+		HistoryStorage: histStorage,
 	})
 
 	srv := &http.Server{
@@ -96,9 +104,13 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 	}
 
-	// 5. 启动后台采集同步轮询协程
+	// 5. 启动后台采集同步轮询与历史引擎协程
 	pollCtx, cancelPoll := context.WithCancel(context.Background())
 	defer cancelPoll()
+
+	if histEngine != nil {
+		_ = histEngine.Start(pollCtx)
+	}
 
 	go runCollectorLoop(pollCtx, tmuxColl, procTracer, outputTracker, engine, memStore, cfg, time.Duration(*intervalMs)*time.Millisecond)
 

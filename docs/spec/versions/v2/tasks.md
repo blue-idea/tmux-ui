@@ -58,14 +58,14 @@
 
 ---
 
-- [ ] **TASK-015 · 历史快照 REST API 与 WebSocket 广播扩展**
+- [x] **TASK-015 · 历史快照 REST API 与 WebSocket 广播扩展**
 
   > 依赖：TASK-014
 
-  - [ ] 在 `internal/server/http_server.go` 中注册路由 `GET /api/v1/panes/{id}/snapshots`（支持 `since`、`limit` 参数及宽容路由参数解析）
-  - [ ] 注册路由 `GET /api/v1/panes/{id}/snapshots/{snapshot_id}`（获取特定历史时刻完整 ANSI 输出与元数据）
-  - [ ] 实现无效 Pane ID 或不存在 Snapshot ID 的标准 404 JSON 错误信封响应
-  - [ ] 扩展 `ws_hub.go` 在快照生成时向订阅客户端广播 `snapshot_created` 事件
+  - [x] 在 `internal/server/http_server.go` 中注册路由 `GET /api/v1/panes/{id}/snapshots`（支持 `since`、`limit` 参数及宽容路由参数解析）
+  - [x] 注册路由 `GET /api/v1/panes/{id}/snapshots/{snapshot_id}`（获取特定历史时刻完整 ANSI 输出与元数据）
+  - [x] 实现无效 Pane ID 或不存在 Snapshot ID 的标准 404 JSON 错误信封响应
+  - [x] 扩展 `ws_hub.go` 在快照生成时向订阅客户端广播 `snapshot_created` 事件
 
   **验证方式：**
   ```bash
@@ -174,7 +174,7 @@
 |---------|------|:-------:|:----:|---------|
 | TASK-013 | 历史快照数据模型与本地 JSONL 持久化引擎 | Unit | 🟢 done | v2.REQ-001 |
 | TASK-014 | 状态变迁快照挂钩与周期性保底 Checkpoint | Unit | 🟢 done | v2.REQ-001 |
-| TASK-015 | 历史快照 REST API 与 WebSocket 广播扩展 | API | ⚪ 待开始 | v2.REQ-002 |
+| TASK-015 | 历史快照 REST API 与 WebSocket 广播扩展 | API | 🟢 done | v2.REQ-002 |
 | TASK-016 | 移动端视口探测 Hook 与响应式卡片墙重塑 | E2E | ⚪ 待开始 | v2.REQ-004 |
 | TASK-017 | 移动端 Bottom Sheet 抽屉与终端触控交互优化 | E2E | ⚪ 待开始 | v2.REQ-005 |
 | TASK-018 | 终端详情页时间轴回放播放器与 Live 追踪切换 | E2E | ⚪ 待开始 | v2.REQ-003 |

@@ -2,9 +2,11 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/fs"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -14,26 +16,34 @@ import (
 	"tmux-ui/internal/store"
 )
 
+// SnapshotReader 抽象快照只读查询接口
+type SnapshotReader interface {
+	ListSnapshots(paneID string, since int64, limit int) ([]model.SnapshotMetadata, error)
+	GetSnapshot(paneID string, snapshotID string) (*model.SnapshotRecord, error)
+}
+
 // HTTPServerOptions 初始化 HTTPServer 的选项
 type HTTPServerOptions struct {
-	Store       *store.MemoryStore
-	Config      *model.Config
-	AuthToken   string
-	TmuxVersion string
-	WSHub       *WSHub
-	StaticFS    fs.FS
+	Store          *store.MemoryStore
+	Config         *model.Config
+	AuthToken      string
+	TmuxVersion    string
+	WSHub          *WSHub
+	StaticFS       fs.FS
+	HistoryStorage SnapshotReader
 }
 
 // HTTPServer 提供 REST API 服务与路由分发
 type HTTPServer struct {
-	router      chi.Router
-	store       *store.MemoryStore
-	config      *model.Config
-	authToken   string
-	tmuxVersion string
-	startTime   time.Time
-	wsHub       *WSHub
-	staticFS    fs.FS
+	router         chi.Router
+	store          *store.MemoryStore
+	config         *model.Config
+	authToken      string
+	tmuxVersion    string
+	startTime      time.Time
+	wsHub          *WSHub
+	staticFS       fs.FS
+	historyStorage SnapshotReader
 }
 
 // NewHTTPServer 构造并初始化路由规则
@@ -50,14 +60,15 @@ func NewHTTPServer(opts HTTPServerOptions) *HTTPServer {
 	}
 
 	s := &HTTPServer{
-		router:      r,
-		store:       opts.Store,
-		config:      opts.Config,
-		authToken:   opts.AuthToken,
-		tmuxVersion: opts.TmuxVersion,
-		startTime:   time.Now(),
-		wsHub:       hub,
-		staticFS:    opts.StaticFS,
+		router:         r,
+		store:          opts.Store,
+		config:         opts.Config,
+		authToken:      opts.AuthToken,
+		tmuxVersion:    opts.TmuxVersion,
+		startTime:      time.Now(),
+		wsHub:          hub,
+		staticFS:       opts.StaticFS,
+		historyStorage: opts.HistoryStorage,
 	}
 
 	s.setupRoutes()
@@ -90,6 +101,8 @@ func (s *HTTPServer) setupRoutes() {
 			pr.Get("/config/agents", s.handleConfigAgents)
 			pr.Get("/panes", s.handleListPanes)
 			pr.Get("/panes/{id}", s.handleGetPaneDetail)
+			pr.Get("/panes/{id}/snapshots", s.handleListSnapshots)
+			pr.Get("/panes/{id}/snapshots/{snapshot_id}", s.handleGetSnapshotDetail)
 		})
 	})
 
@@ -196,20 +209,21 @@ func (s *HTTPServer) handleListPanes(w http.ResponseWriter, r *http.Request) {
 	renderSuccess(w, http.StatusOK, filtered)
 }
 
-// handleGetPaneDetail 获取单个 Pane 详情（支持宽容路由：裸数字 1 或 URL 编码 %251）
-func (s *HTTPServer) handleGetPaneDetail(w http.ResponseWriter, r *http.Request) {
-	rawID := chi.URLParam(r, "id")
-	// URL 解码
+// normalizePaneID 对 Pane ID 进行 URL 解码并规整为带 % 前缀的标准格式
+func normalizePaneID(rawID string) string {
 	unescaped, err := url.PathUnescape(rawID)
 	if err == nil {
 		rawID = unescaped
 	}
-
-	// 宽容解析：裸数字自动补充 % 前缀
-	paneID := rawID
-	if !strings.HasPrefix(paneID, "%") {
-		paneID = "%" + paneID
+	if !strings.HasPrefix(rawID, "%") {
+		rawID = "%" + rawID
 	}
+	return rawID
+}
+
+// handleGetPaneDetail 获取单个 Pane 详情（支持宽容路由：裸数字 1 或 URL 编码 %251）
+func (s *HTTPServer) handleGetPaneDetail(w http.ResponseWriter, r *http.Request) {
+	paneID := normalizePaneID(chi.URLParam(r, "id"))
 
 	if s.store == nil {
 		renderError(w, http.StatusNotFound, "PANE_NOT_FOUND", "Target tmux pane does not exist", map[string]string{"pane_id": paneID})
@@ -223,6 +237,56 @@ func (s *HTTPServer) handleGetPaneDetail(w http.ResponseWriter, r *http.Request)
 	}
 
 	renderSuccess(w, http.StatusOK, detail)
+}
+
+// handleListSnapshots 查询指定 Pane 的历史快照元数据列表
+func (s *HTTPServer) handleListSnapshots(w http.ResponseWriter, r *http.Request) {
+	paneID := normalizePaneID(chi.URLParam(r, "id"))
+	if s.historyStorage == nil {
+		renderSuccess(w, http.StatusOK, []model.SnapshotMetadata{})
+		return
+	}
+
+	var since int64 = 0
+	if sinceStr := r.URL.Query().Get("since"); sinceStr != "" {
+		if val, err := strconv.ParseInt(sinceStr, 10, 64); err == nil {
+			since = val
+		}
+	}
+
+	limit := 100
+	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
+		if val, err := strconv.Atoi(limitStr); err == nil && val > 0 {
+			limit = val
+		}
+	}
+
+	list, err := s.historyStorage.ListSnapshots(paneID, since, limit)
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "INTERNAL_ERROR", "Failed to retrieve snapshots", nil)
+		return
+	}
+
+	renderSuccess(w, http.StatusOK, list)
+}
+
+// handleGetSnapshotDetail 获取指定 Pane 的单条历史快照完整详情（含 ANSI 内容）
+func (s *HTTPServer) handleGetSnapshotDetail(w http.ResponseWriter, r *http.Request) {
+	paneID := normalizePaneID(chi.URLParam(r, "id"))
+	snapshotID := chi.URLParam(r, "snapshot_id")
+
+	if s.historyStorage == nil {
+		renderError(w, http.StatusNotFound, "SNAPSHOT_NOT_FOUND", fmt.Sprintf("Snapshot '%s' not found for pane '%s'", snapshotID, paneID), nil)
+		return
+	}
+
+	record, err := s.historyStorage.GetSnapshot(paneID, snapshotID)
+	if err != nil || record == nil {
+		renderError(w, http.StatusNotFound, "SNAPSHOT_NOT_FOUND", fmt.Sprintf("Snapshot '%s' not found for pane '%s'", snapshotID, paneID), nil)
+		return
+	}
+
+	renderSuccess(w, http.StatusOK, record)
 }
 
 // renderSuccess 返回统一成功响应格式

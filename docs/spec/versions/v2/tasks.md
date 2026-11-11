@@ -102,14 +102,14 @@
 
 ---
 
-- [ ] **TASK-017 · 移动端 Bottom Sheet 抽屉与终端触控交互优化**
+- [x] **TASK-017 · 移动端 Bottom Sheet 抽屉与终端触控交互优化**
 
   > 依赖：TASK-016
 
-  - [ ] 开发轻量 `web/src/components/BottomSheet.tsx`：自底向上滑出动画、最大高度 85vh 约束、顶部拖拽手柄、点击遮罩或下滑关闭
-  - [ ] 重构 `web/src/components/TimelineDrawer.tsx`：移动端视口下无缝转换为 Bottom Sheet 呈现时间线节点
-  - [ ] 优化 `web/src/components/TerminalViewer.tsx`：窄屏视口下动态调整 xterm 容器与 FitAddon，添加悬浮「滚动至底部」快捷按钮
-  - [ ] 确保移动端所有可点击元素满足 $\ge 44 \times 44\text{px}$ 触控热区可访问性规范
+  - [x] 开发轻量 `web/src/components/BottomSheet.tsx`：自底向上滑出动画、最大高度 85vh 约束、顶部拖拽手柄、点击遮罩或下滑关闭
+  - [x] 重构 `web/src/components/TimelineDrawer.tsx`：移动端视口下无缝转换为 Bottom Sheet 呈现时间线节点
+  - [x] 优化 `web/src/components/TerminalViewer.tsx`：窄屏视口下动态调整 xterm 容器与 FitAddon，添加悬浮「滚动至底部」快捷按钮
+  - [x] 确保移动端所有可点击元素满足 $\ge 44 \times 44\text{px}$ 触控热区可访问性规范
 
   **验证方式：**
   ```bash
@@ -176,6 +176,6 @@
 | TASK-014 | 状态变迁快照挂钩与周期性保底 Checkpoint | Unit | 🟢 done | v2.REQ-001 |
 | TASK-015 | 历史快照 REST API 与 WebSocket 广播扩展 | API | 🟢 done | v2.REQ-002 |
 | TASK-016 | 移动端视口探测 Hook 与响应式卡片墙重塑 | E2E | 🟢 done | v2.REQ-004 |
-| TASK-017 | 移动端 Bottom Sheet 抽屉与终端触控交互优化 | E2E | ⚪ 待开始 | v2.REQ-005 |
+| TASK-017 | 移动端 Bottom Sheet 抽屉与终端触控交互优化 | E2E | 🟢 done | v2.REQ-005 |
 | TASK-018 | 终端详情页时间轴回放播放器与 Live 追踪切换 | E2E | ⚪ 待开始 | v2.REQ-003 |
 | TASK-019 | 前端静态产物内嵌与 v2 全链路回归验收 | E2E | ⚪ 待开始 | v2.REQ-001 ~ v2.REQ-005 |

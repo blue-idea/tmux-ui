@@ -1,0 +1,229 @@
+package main
+
+import (
+	"context"
+	"flag"
+	"fmt"
+	"log/slog"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"tmux-ui/internal/collector"
+	"tmux-ui/internal/config"
+	"tmux-ui/internal/detector"
+	"tmux-ui/internal/model"
+	"tmux-ui/internal/server"
+	"tmux-ui/internal/store"
+	"tmux-ui/web"
+)
+
+func main() {
+	// 命令行参数定义
+	port := flag.Int("port", 8080, "HTTP server listening port")
+	token := flag.String("token", "", "Optional authentication token for REST API and WebSocket")
+	socketName := flag.String("socket-name", "", "Tmux socket name (-L)")
+	socketPath := flag.String("socket-path", "", "Tmux socket absolute path (-S)")
+	configPath := flag.String("config", "config/agents.yaml", "Path to agent rules configuration YAML")
+	intervalMs := flag.Int("interval", 1000, "Polling interval in milliseconds")
+	flag.Parse()
+
+	// 环境变量覆盖兜底
+	if envPort := os.Getenv("PORT"); envPort != "" {
+		var p int
+		if _, err := fmt.Sscanf(envPort, "%d", &p); err == nil && p > 0 {
+			*port = p
+		}
+	}
+	if envToken := os.Getenv("TMUX_UI_TOKEN"); envToken != "" && *token == "" {
+		*token = envToken
+	}
+
+	slog.Info("Starting tmux-ui visualizer",
+		"port", *port,
+		"token_protected", *token != "",
+		"config", *configPath,
+	)
+
+	// 1. 加载配置
+	cfg, err := config.Load(*configPath)
+	if err != nil {
+		slog.Warn("Failed to load configuration file, using defaults", "error", err)
+		cfg = config.DefaultConfig()
+	}
+
+	// 2. 初始化核心组件
+	memStore := store.NewMemoryStore()
+	engine := detector.NewEngine()
+	outputTracker := collector.NewPaneOutputTracker(cfg.Collector.CaptureTailLines)
+	procTracer := collector.NewProcessTracer(collector.ProcessTracerOptions{})
+
+	tmuxColl := collector.NewTmuxCollector(collector.Options{
+		CLISocketName: *socketName,
+		CLISocketPath: *socketPath,
+		Config:        cfg.Collector,
+	})
+
+	tmuxVersion := "unknown"
+	v, err := tmuxColl.DetectVersion(context.Background())
+	if err != nil {
+		slog.Warn("Tmux version detection warning", "error", err)
+	} else {
+		tmuxVersion = v.Raw
+	}
+
+	// 3. 内嵌静态资源
+	staticFS, err := web.GetStaticFS()
+	if err != nil {
+		slog.Warn("Failed to load embedded web static filesystem", "error", err)
+	}
+
+	// 4. 初始化 HTTP 与 WebSocket 服务
+	httpSrv := server.NewHTTPServer(server.HTTPServerOptions{
+		Store:       memStore,
+		Config:      cfg,
+		AuthToken:   *token,
+		TmuxVersion: tmuxVersion,
+		StaticFS:    staticFS,
+	})
+
+	srv := &http.Server{
+		Addr:         fmt.Sprintf(":%d", *port),
+		Handler:      httpSrv.Router(),
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+	}
+
+	// 5. 启动后台采集同步轮询协程
+	pollCtx, cancelPoll := context.WithCancel(context.Background())
+	defer cancelPoll()
+
+	go runCollectorLoop(pollCtx, tmuxColl, procTracer, outputTracker, engine, memStore, cfg, time.Duration(*intervalMs)*time.Millisecond)
+
+	// 6. 启动 HTTP 服务
+	go func() {
+		slog.Info(fmt.Sprintf("Server ready at http://127.0.0.1:%d", *port))
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			slog.Error("HTTP server failed", "error", err)
+			os.Exit(1)
+		}
+	}()
+
+	// 7. 优雅退出信号监听
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+	<-quit
+
+	slog.Info("Shutting down tmux-ui server gracefully...")
+	cancelPoll()
+
+	shutdownCtx, cancelShutdown := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelShutdown()
+
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		slog.Error("Server forced to shutdown", "error", err)
+	}
+	slog.Info("Server stopped")
+}
+
+// runCollectorLoop 后台周期性采集与判定同步循环
+func runCollectorLoop(
+	ctx context.Context,
+	tmuxColl *collector.TmuxCollector,
+	procTracer *collector.ProcessTracer,
+	tracker *collector.PaneOutputTracker,
+	engine *detector.Engine,
+	memStore *store.MemoryStore,
+	cfg *model.Config,
+	interval time.Duration,
+) {
+	ticker := time.NewTicker(interval)
+	cleanupTicker := time.NewTicker(1 * time.Minute)
+	defer ticker.Stop()
+	defer cleanupTicker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+
+		case now := <-cleanupTicker.C:
+			// 清理超过 10 分钟未更新的 dead panes
+			memStore.CleanupDeadPanes(10*time.Minute, now)
+
+		case now := <-ticker.C:
+			panes, err := tmuxColl.ListPanes(ctx)
+			if err != nil {
+				continue
+			}
+
+			// 获取全量进程树
+			procTree, _ := procTracer.CollectProcessTree(ctx)
+
+			for _, p := range panes {
+				// 获取子进程与匹配 Agent
+				var procs []model.ProcessInfo
+				if procTree != nil {
+					procs = procTree.GetPaneProcesses(p.PanePID)
+				}
+				agentType := collector.MatchAgentType(procs, cfg.Agents)
+
+				// 查找对应智能体规则
+				var matchedRule *model.AgentRule
+				for i := range cfg.Agents {
+					if cfg.Agents[i].Name == agentType {
+						matchedRule = &cfg.Agents[i]
+						break
+					}
+				}
+
+				// 捕获 ANSI 终端输出
+				ansiOutput, _ := tmuxColl.CapturePane(ctx, p.PaneID)
+
+				// 哈希比对与活跃跟踪
+				outputInfo, changed := tracker.Update(p.PaneID, p.IsDead, ansiOutput, now)
+				idleSec := int(now.Sub(outputInfo.LastActiveAt).Seconds())
+				if idleSec < 0 {
+					idleSec = 0
+				}
+
+				// 状态判定
+				result := engine.Evaluate(detector.EvaluationInput{
+					PaneID:            p.PaneID,
+					IsDead:            p.IsDead,
+					CurrentCommand:    p.CurrentCommand,
+					AgentType:         agentType,
+					TailLines:         outputInfo.TailLines,
+					HasChanged:        changed,
+					LastActiveAt:      outputInfo.LastActiveAt,
+					Now:               now,
+					InactivityTimeout: time.Duration(cfg.Collector.InactivityTimeoutS) * time.Second,
+					Rule:              matchedRule,
+				})
+
+				detail := model.PaneDetail{
+					PaneSummary: model.PaneSummary{
+						PaneID:         p.PaneID,
+						SessionName:    p.SessionName,
+						WindowID:       p.WindowID,
+						WindowName:     p.WindowName,
+						AgentType:      agentType,
+						State:          result.State,
+						CurrentCommand: p.CurrentCommand,
+						PanePID:        p.PanePID,
+						IdleSeconds:    int64(idleSec),
+						IsDead:         p.IsDead,
+						PreviewLines:   outputInfo.TailLines,
+						LastActiveAt:   outputInfo.LastActiveAt,
+					},
+					RawOutputANSI: ansiOutput,
+					Processes:     procs,
+				}
+
+				memStore.UpsertPane(detail, result.TriggerRule)
+			}
+		}
+	}
+}

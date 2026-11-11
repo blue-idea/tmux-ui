@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"io/fs"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,6 +21,7 @@ type HTTPServerOptions struct {
 	AuthToken   string
 	TmuxVersion string
 	WSHub       *WSHub
+	StaticFS    fs.FS
 }
 
 // HTTPServer 提供 REST API 服务与路由分发
@@ -31,6 +33,7 @@ type HTTPServer struct {
 	tmuxVersion string
 	startTime   time.Time
 	wsHub       *WSHub
+	staticFS    fs.FS
 }
 
 // NewHTTPServer 构造并初始化路由规则
@@ -54,6 +57,7 @@ func NewHTTPServer(opts HTTPServerOptions) *HTTPServer {
 		tmuxVersion: opts.TmuxVersion,
 		startTime:   time.Now(),
 		wsHub:       hub,
+		staticFS:    opts.StaticFS,
 	}
 
 	s.setupRoutes()
@@ -88,6 +92,31 @@ func (s *HTTPServer) setupRoutes() {
 			pr.Get("/panes/{id}", s.handleGetPaneDetail)
 		})
 	})
+
+	// 静态资源与前端 SPA 路由回退
+	if s.staticFS != nil {
+		fileServer := http.FileServer(http.FS(s.staticFS))
+		s.router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
+			path := strings.TrimPrefix(r.URL.Path, "/")
+			if path == "" {
+				fileServer.ServeHTTP(w, r)
+				return
+			}
+			if f, err := s.staticFS.Open(path); err == nil {
+				_ = f.Close()
+				fileServer.ServeHTTP(w, r)
+				return
+			}
+			indexData, err := fs.ReadFile(s.staticFS, "index.html")
+			if err != nil {
+				http.NotFound(w, r)
+				return
+			}
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write(indexData)
+		})
+	}
 }
 
 // authMiddleware 校验 Bearer Token 或 URL Token

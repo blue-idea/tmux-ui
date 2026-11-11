@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
+	"testing/fstest"
 	"time"
 
 	"tmux-ui/internal/model"
@@ -279,6 +281,63 @@ func TestHTTP_AuthMiddleware(t *testing.T) {
 
 		if rec.Code != http.StatusOK {
 			t.Fatalf("有效 Query Token 期望 200，实际为 %d", rec.Code)
+		}
+	})
+}
+
+// TestHTTP_StaticSPA 验证内嵌静态资源与前端 SPA 路由 Fallback
+func TestHTTP_StaticSPA(t *testing.T) {
+	mockFS := fstest.MapFS{
+		"index.html": &fstest.MapFile{
+			Data: []byte("<!doctype html><html><body>tmux-ui-app</body></html>"),
+		},
+		"assets/style.css": &fstest.MapFile{
+			Data: []byte("body { background: #000; }"),
+		},
+	}
+
+	memStore := store.NewMemoryStore()
+	srv := server.NewHTTPServer(server.HTTPServerOptions{
+		Store:    memStore,
+		StaticFS: mockFS,
+	})
+
+	t.Run("访问根路径 / 返回 index.html", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", nil)
+		rec := httptest.NewRecorder()
+		srv.Router().ServeHTTP(rec, req)
+
+		if rec.Code != http.StatusOK {
+			t.Fatalf("期望 200，实际为 %d", rec.Code)
+		}
+		if !strings.Contains(rec.Body.String(), "tmux-ui-app") {
+			t.Fatalf("响应内容不包含预期 index.html: %s", rec.Body.String())
+		}
+	})
+
+	t.Run("访问静态 asset 文件返回对应内容", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/assets/style.css", nil)
+		rec := httptest.NewRecorder()
+		srv.Router().ServeHTTP(rec, req)
+
+		if rec.Code != http.StatusOK {
+			t.Fatalf("期望 200，实际为 %d", rec.Code)
+		}
+		if !strings.Contains(rec.Body.String(), "background") {
+			t.Fatalf("响应内容错误: %s", rec.Body.String())
+		}
+	})
+
+	t.Run("访问不存在的客户端前端路由 fallback 至 index.html", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/panes/1", nil)
+		rec := httptest.NewRecorder()
+		srv.Router().ServeHTTP(rec, req)
+
+		if rec.Code != http.StatusOK {
+			t.Fatalf("期望 200，实际为 %d", rec.Code)
+		}
+		if !strings.Contains(rec.Body.String(), "tmux-ui-app") {
+			t.Fatalf("期望 Fallback 至 index.html: %s", rec.Body.String())
 		}
 	})
 }

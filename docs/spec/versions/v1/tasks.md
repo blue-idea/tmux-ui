@@ -249,13 +249,13 @@
 
 ---
 
-- [ ] **TASK-012 · 前端静态资源 Embed 内嵌与单二进制集成验收**
+- [x] **TASK-012 · 前端静态资源 Embed 内嵌与单二进制集成验收**
 
   > 依赖：TASK-006, TASK-007, TASK-010, TASK-011
 
-  - [ ] 配置 Go `embed.FS` 内嵌前端编译产物 `web/dist`
-  - [ ] 编写 `cmd/tmux-ui/main.go` 启动主入口与 CLI 参数解析（`--port`, `--token`, `--socket-name`, `--socket-path`）
-  - [ ] 构建独立单二进制可执行文件并进行全链路冒烟验收
+  - [x] 配置 Go `embed.FS` 内嵌前端编译产物 `web/dist`
+  - [x] 编写 `cmd/tmux-ui/main.go` 启动主入口与 CLI 参数解析（`--port`, `--token`, `--socket-name`, `--socket-path`）
+  - [x] 构建独立单二进制可执行文件并进行全链路冒烟验收
 
   **验证方式：**
   ```bash
@@ -280,10 +280,10 @@
 | TASK-004 | 终端 ANSI 输出捕获与哈希差异跟踪 | Unit | 🟢 done | v1.REQ-002 |
 | TASK-005 | 多智能体状态判定引擎与内存存储 | Unit | 🟢 done | v1.REQ-003 |
 | TASK-006 | 后端 HTTP REST API 与 Token 认证中间件 | API | 🟢 done | v1.REQ-005 |
-| TASK-007 | WebSocket Hub 实时推流服务 | API | ⬜ 待开始 | v1.REQ-005 |
-| TASK-008 | 前端 Vite 脚手架与 WebSocket 通信 Hook | Unit | ⬜ 待开始 | v1.REQ-006 |
-| TASK-009 | Web 总览卡片墙与多维状态筛选 | E2E | ⬜ 待开始 | v1.REQ-006 |
-| TASK-010 | 终端详情页与 xterm.js ANSI 渲染器 | E2E | ⬜ 待开始 | v1.REQ-007 |
-| TASK-011 | 状态变迁时间线抽屉与浏览器交互通知 | E2E | ⬜ 待开始 | v1.REQ-006, v1.REQ-007 |
-| TASK-012 | 前端静态资源 Embed 内嵌与单二进制集成验收 | E2E | ⬜ 待开始 | v1.REQ-001, v1.REQ-005, v1.REQ-006 |
+| TASK-007 | WebSocket Hub 实时推流服务 | API | 🟢 done | v1.REQ-005 |
+| TASK-008 | 前端 Vite 脚手架与 WebSocket 通信 Hook | Unit | 🟢 done | v1.REQ-006 |
+| TASK-009 | Web 总览卡片墙与多维状态筛选 | E2E | 🟢 done | v1.REQ-006 |
+| TASK-010 | 终端详情页与 xterm.js ANSI 渲染器 | E2E | 🟢 done | v1.REQ-007 |
+| TASK-011 | 状态变迁时间线抽屉与浏览器交互通知 | E2E | 🟢 done | v1.REQ-006, v1.REQ-007 |
+| TASK-012 | 前端静态资源 Embed 内嵌与单二进制集成验收 | E2E | 🟢 done | v1.REQ-001, v1.REQ-005, v1.REQ-006 |
 

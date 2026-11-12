@@ -57,14 +57,14 @@
 
 ---
 
-- [ ] **TASK-022 · 前端 URL Token 解析、sessionStorage 记忆与地址栏隐私净化**
+- [x] **TASK-022 · 前端 URL Token 解析、sessionStorage 记忆与地址栏隐私净化**
 
   > 依赖：无
 
-  - [ ] 新建 `web/src/auth/tokenManager.ts`，解析 URL 中的 `token` 或 `auth_token` 参数
-  - [ ] 实现 `sessionStorage` 会话持久化与优雅降级回退机制
-  - [ ] 实现 `scrubUrlToken()`，通过 `window.history.replaceState` 清除浏览器地址栏上的敏感 Token
-  - [ ] 编写 Vitest 单元测试覆盖各类 URL 参数、刷新回退与地址栏净化场景
+  - [x] 新建 `web/src/auth/tokenManager.ts`，解析 URL 中的 `token` 或 `auth_token` 参数
+  - [x] 实现 `sessionStorage` 会话持久化与优雅降级回退机制
+  - [x] 实现 `scrubUrlToken()`，通过 `window.history.replaceState` 清除浏览器地址栏上的敏感 Token
+  - [x] 编写 Vitest 单元测试覆盖各类 URL 参数、刷新回退与地址栏净化场景
 
   **验证方式：**
   ```bash

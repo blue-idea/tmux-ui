@@ -145,3 +145,4 @@ func TestFetchStatusFromServer(t *testing.T) {
 		}
 	})
 }
+

@@ -3,6 +3,7 @@ import { useTmuxWS } from './hooks/useTmuxWS'
 import { useNotifications } from './hooks/useNotifications'
 import { OverviewGrid } from './components/OverviewGrid'
 import { TerminalViewer } from './components/TerminalViewer'
+import { apiClient } from './api/client'
 import type { PaneDetail } from './types'
 import { Terminal, Activity, Wifi, WifiOff, Bell, BellRing } from 'lucide-react'
 
@@ -37,16 +38,12 @@ export const App: React.FC = () => {
       })
     }
 
-    // 然后异步向后端 REST API 请求全量输出
-    const encodedId = encodeURIComponent(selectedPaneId)
-    fetch(`/api/v1/panes/${encodedId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch detail')
-        return res.json()
-      })
-      .then((resJson) => {
-        if (resJson && resJson.data) {
-          setPaneDetail(resJson.data)
+    // 然后异步向后端 REST API 请求全量输出（通过统一鉴权客户端）
+    apiClient
+      .getPaneDetail(selectedPaneId)
+      .then((detail) => {
+        if (detail) {
+          setPaneDetail(detail)
         }
       })
       .catch(() => {

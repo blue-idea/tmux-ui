@@ -79,15 +79,15 @@
 
 ---
 
-- [ ] **TASK-023 · 前端统一 HTTP API 客户端封装与全链路鉴权请求改造**
+- [x] **TASK-023 · 前端统一 HTTP API 客户端封装与全链路鉴权请求改造**
 
   > 依赖：TASK-022
 
-  - [ ] 新建 `web/src/api/client.ts`，封装统一 `fetchWithAuth(url, options)` 客户端
-  - [ ] 自动从 `tokenManager` 获取有效 Token 并注入 `Authorization: Bearer <token>`
-  - [ ] 改造 `web/src/App.tsx` 中的 Pane 详情请求，使用 `fetchWithAuth` 替代原生 `fetch`
-  - [ ] 改造 `web/src/hooks/useHistory.ts` 和 `web/src/components/PlaybackBar.tsx` 中的快照查询请求
-  - [ ] 编写 Vitest 单元测试验证 Headers 注入与 401 拦截处理
+  - [x] 新建 `web/src/api/client.ts`，封装统一 `fetchWithAuth(url, options)` 客户端
+  - [x] 自动从 `tokenManager` 获取有效 Token 并注入 `Authorization: Bearer <token>`
+  - [x] 改造 `web/src/App.tsx` 中的 Pane 详情请求，使用 `fetchWithAuth` 替代原生 `fetch`
+  - [x] 改造 `web/src/hooks/useHistory.ts` 和 `web/src/components/PlaybackBar.tsx` 中的快照查询请求
+  - [x] 编写 Vitest 单元测试验证 Headers 注入与 401 拦截处理
 
   **验证方式：**
   ```bash

@@ -146,14 +146,14 @@
 
 ---
 
-- [ ] **TASK-026 · CLI 实时状态查询引擎、表格格式化与 JSON 输出**
+- [x] **TASK-026 · CLI 实时状态查询引擎、表格格式化与 JSON 输出**
 
   > 依赖：无
 
-  - [ ] 新建 `internal/cli` 模块，实现 `StatusOptions`、`FormatStatusTable` 与 `FormatStatusJSON`
-  - [ ] 实现 `FetchStatusFromServer` 与 `CollectLocalStatus` 双模查询逻辑
-  - [ ] 在 `cmd/tmux-ui/main.go` 中接入 `status`、`ps`、`ls` 子命令分发路由
-  - [ ] 编写 Go 单元测试覆盖表格格式化、JSON 格式化、服务端与本地拉取场景
+  - [x] 新建 `internal/cli` 模块，实现 `StatusOptions`、`FormatStatusTable` 与 `FormatStatusJSON`
+  - [x] 实现 `FetchStatusFromServer` 与 `CollectLocalStatus` 双模查询逻辑
+  - [x] 在 `cmd/tmux-ui/main.go` 中接入 `status`、`ps`、`ls` 子命令分发路由
+  - [x] 编写 Go 单元测试覆盖表格格式化、JSON 格式化、服务端与本地拉取场景
 
   **验证方式：**
   ```bash

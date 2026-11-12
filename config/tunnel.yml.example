@@ -1,0 +1,24 @@
+# Cloudflare Tunnel (cloudflared) 配置文件样例
+# 官方参考: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+
+tunnel: <YOUR-TUNNEL-UUID-OR-NAME>
+credentials-file: /etc/cloudflared/<YOUR-TUNNEL-UUID>.json
+
+# 传输配置（推荐使用 http2 或 quic 保持稳定长连接）
+protocol: auto
+
+# 路由与入口服务规则 (Ingress Rules)
+ingress:
+  # 1. 绑定你的自定义公网二级域名
+  - hostname: tmux.example.com
+    service: http://127.0.0.1:8080
+    originRequest:
+      # WebSocket 与 HTTP 长连接保持配置
+      connectTimeout: 30s
+      noTLSVerify: false
+      keepAliveTimeout: 1m30s
+      keepAliveConnections: 100
+      tcpKeepAlive: 30s
+
+  # 2. 默认 404 兜底规则（cloudflared 严格要求必须以 catch-all 结尾）
+  - service: http_status:404

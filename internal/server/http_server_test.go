@@ -341,3 +341,54 @@ func TestHTTP_StaticSPA(t *testing.T) {
 		}
 	})
 }
+
+// v3.REQ-001-AC-002: Cloudflare 反向代理 CF-Connecting-IP 与真实公网 IP 解析
+func TestHTTPServer_RealIP_Cloudflare(t *testing.T) {
+	srv, _ := setupTestServer("")
+
+	t.Run("优先从 CF-Connecting-IP 提取公网 IP", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/api/v1/health", nil)
+		req.Header.Set("CF-Connecting-IP", "203.0.113.195")
+		req.Header.Set("X-Forwarded-For", "198.51.100.10, 10.0.0.1")
+		req.RemoteAddr = "127.0.0.1:12345"
+
+		rec := httptest.NewRecorder()
+		srv.Router().ServeHTTP(rec, req)
+
+		if rec.Code != http.StatusOK {
+			t.Fatalf("期望状态码 200，实际为 %d", rec.Code)
+		}
+
+		ip := server.GetClientIP(req)
+		if ip != "203.0.113.195" {
+			t.Errorf("期望从 CF-Connecting-IP 解析出 203.0.113.195，实际得到: %s", ip)
+		}
+	})
+
+	t.Run("无 CF-Connecting-IP 时从 X-Forwarded-For 提取第一跳原始 IP", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/api/v1/health", nil)
+		req.Header.Set("X-Forwarded-For", "198.51.100.10, 10.0.0.1")
+		req.RemoteAddr = "127.0.0.1:12345"
+
+		rec := httptest.NewRecorder()
+		srv.Router().ServeHTTP(rec, req)
+
+		ip := server.GetClientIP(req)
+		if ip != "198.51.100.10" {
+			t.Errorf("期望从 X-Forwarded-For 解析出 198.51.100.10，实际得到: %s", ip)
+		}
+	})
+
+	t.Run("直连请求时从 RemoteAddr 解析 IP", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/api/v1/health", nil)
+		req.RemoteAddr = "192.168.1.50:54321"
+
+		rec := httptest.NewRecorder()
+		srv.Router().ServeHTTP(rec, req)
+
+		ip := server.GetClientIP(req)
+		if ip != "192.168.1.50" {
+			t.Errorf("期望从 RemoteAddr 解析出 192.168.1.50，实际得到: %s", ip)
+		}
+	})
+}

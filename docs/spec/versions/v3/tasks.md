@@ -34,15 +34,15 @@
 
 ---
 
-- [ ] **TASK-021 · 服务端公网隧道集成、安全随机 Token 生成与直登 URL 打印**
+- [x] **TASK-021 · 服务端公网隧道集成、安全随机 Token 生成与直登 URL 打印**
 
   > 依赖：TASK-020
 
-  - [ ] 新建 `internal/tunnel` 模块，使用 `crypto/rand` 实现 32 字节高强度随机 Token 生成
-  - [ ] 实现公网直达免密 URL 格式化与控制台高亮卡片打印
-  - [ ] 扩展 `cmd/tmux-ui/main.go`，支持 `--tunnel`、`--public-url`、`--cloudflared-bin` 标志与对应环境变量
-  - [ ] 当公网模式启用且未指定 token 时，自动激活安全 Token 并输出防裸奔警告
-  - [ ] 编写 Go 单元测试覆盖 Token 生成、URL 拼装与安全防护拦截
+  - [x] 新建 `internal/tunnel` 模块，使用 `crypto/rand` 实现 32 字节高强度随机 Token 生成
+  - [x] 实现公网直达免密 URL 格式化与控制台高亮卡片打印
+  - [x] 扩展 `cmd/tmux-ui/main.go`，支持 `--tunnel`、`--public-url`、`--cloudflared-bin` 标志与对应环境变量
+  - [x] 当公网模式启用且未指定 token 时，自动激活安全 Token 并输出防裸奔警告
+  - [x] 编写 Go 单元测试覆盖 Token 生成、URL 拼装与安全防护拦截
 
   **验证方式：**
   ```bash

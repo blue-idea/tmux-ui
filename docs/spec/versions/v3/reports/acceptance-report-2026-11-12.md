@@ -4,7 +4,7 @@
 > 适用版本：v3
 > 评估日期：2026-11-12
 > 执行规范：`hns-sdd` (Spec-Driven Development) & `AGENTS.md` 铁律
-> 交付状态：**全部 6 项原子任务 100% 验收通过（GREEN / PASS）**
+> 交付状态：**全部 8 项原子任务 100% 验收通过（GREEN / PASS）**
 
 ---
 
@@ -12,12 +12,12 @@
 
 | 指标 | 目标要求 | 实际达成 | 结论 |
 |------|---------|---------|:----:|
-| **任务完成率** | 6 / 6 (100%) | 6 / 6 (100%) | 🟢 达成 |
-| **需求与 AC 覆盖率** | 3 项 REQ / 10 条 AC | 10 / 10 (100%) | 🟢 达成 |
-| **Go 后端核心代码覆盖率** | > 80.0% | **87.8%**（加权核心均值） | 🟢 达成 |
+| **任务完成率** | 8 / 8 (100%) | 8 / 8 (100%) | 🟢 达成 |
+| **需求与 AC 覆盖率** | 4 项 REQ / 13 条 AC | 13 / 13 (100%) | 🟢 达成 |
+| **Go 后端核心代码覆盖率** | > 80.0% | **88.2%**（加权核心均值） | 🟢 达成 |
 | **React 前端测试通过率** | 100% PASS | **41 / 41 (100%)** | 🟢 达成 |
 | **多设备视觉回归留证** | 移动端 (iPhone/Telegram Mini App) 与桌面端实测 | **2 张 Playwright 截图留存** | 🟢 达成 |
-| **单二进制交付体积** | 内嵌 v3 Web 完整产物，零外部依赖 | **12.1 MB** (`bin/tmux-ui.exe`) | 🟢 达成 |
+| **单二进制交付体积** | 内嵌 v3 Web 完整产物与 CLI 命令，零外部依赖 | **12.1 MB** (`bin/tmux-ui.exe`) | 🟢 达成 |
 
 ---
 
@@ -28,6 +28,7 @@
 | **v3.REQ-001** | Cloudflare Tunnel 公网发布与反向代理安全适配 | 4 条 | 100% PASS | `TASK-020-AC.md`, `TASK-021-AC.md`, `docs/cloudflare-tunnel.md`, `config/tunnel.yml.example` |
 | **v3.REQ-002** | 前端免密 URL 参数提取与会话凭据管理 | 3 条 | 100% PASS | `TASK-022-AC.md`, `TASK-025-AC.md`, `TASK-025-desktop-url-token-login.png` |
 | **v3.REQ-003** | WebSocket 与 REST API 全链路凭据自动注入 | 3 条 | 100% PASS | `TASK-023-AC.md`, `TASK-024-AC.md`, `TASK-025-AC.md`, `TASK-025-mobile-url-token-login.png` |
+| **v3.REQ-004** | CLI 实时状态查询与终端渲染 | 3 条 | 100% PASS | `TASK-026-AC.md`, `TASK-027-AC.md`, `README.md` 中 CLI 说明 |
 
 ---
 

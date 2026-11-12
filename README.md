@@ -39,6 +39,109 @@
 
 打开浏览器访问 `http://127.0.0.1:8080` 即可查看控制台。
 
+---
+
+## 💻 命令行实时状态查询 (CLI Mode)
+
+无需打开浏览器，直接在终端中通过命令行一键获取所有 tmux 会话及智能体的实时执行状态。支持本地直接探测与远程已运行服务端拉取双模式。
+
+### 1. 常用命令速查
+
+```bash
+# 1. 终端 ASCII 表格查看实时状态（本地直接采集或直连当前 tmux 会话）
+./bin/tmux-ui status
+
+# 2. 支持别名快捷命令 (ps / ls)
+./bin/tmux-ui ps
+./bin/tmux-ui ls
+
+# 3. 输出结构化 JSON 格式（便于脚本、CI/CD 或告警机器人消费）
+./bin/tmux-ui status --json
+
+# 4. 远程/本地向已运行的 tmux-ui 服务端拉取状态（支持 Bearer Token 鉴权）
+./bin/tmux-ui status --server http://127.0.0.1:8080 --token my-secret-token
+
+# 5. 指定自定义 tmux socket 名称或绝对路径
+./bin/tmux-ui status --socket-name dev_session
+./bin/tmux-ui status --socket-path /tmp/tmux-1000/default
+```
+
+### 2. 终端表格输出效果
+
+执行 `tmux-ui status` 时的格式化 ASCII 输出效果：
+
+```text
+PANE ID   SESSION        AGENT         STATE           COMMAND   IDLE   LAST PREVIEW
+-------   -------        -----         -----           -------   ----   ------------
+%0        dev:editor     claude-code   [WORKING]       node      2s     Thinking...
+%1        prod:agent     aider         [WAITING_INPUT] python    18s    Apply these changes? (y/n)
+%2        test:shell     -             [IDLE]          zsh       45s    git status
+%3        build:worker   codex         [ERROR]         codex     5s     Process exited with code 1
+```
+
+### 3. JSON 格式输出效果
+
+执行 `tmux-ui status --json` 时输出结构化数据：
+
+```json
+[
+  {
+    "pane_id": "%0",
+    "session_name": "dev",
+    "window_name": "editor",
+    "agent_type": "claude-code",
+    "state": "working",
+    "current_command": "node",
+    "idle_seconds": 2,
+    "preview_lines": [
+      "Running semantic analysis...",
+      "Thinking..."
+    ]
+  }
+]
+```
+
+### 4. 命令行参数选项速查
+
+| 参数标志 | 简写 / 环境变量 | 默认值 | 说明 |
+|---------|---------------|--------|------|
+| `--json` | — | `false` | 以结构化 JSON 数组格式输出状态 |
+| `--server` | `TMUX_UI_SERVER` | `""` | 目标 tmux-ui 服务端地址（如 `http://127.0.0.1:8080`），指定时走 HTTP API 拉取 |
+| `--token` | `TMUX_UI_TOKEN` | `""` | 服务端 API 认证密钥（携带 `Authorization: Bearer <token>`） |
+| `--socket-name` | — | `""` | tmux 本地 socket 别名 (`-L`) |
+| `--socket-path` | — | `""` | tmux 本地 socket 绝对路径 (`-S`) |
+| `--config` | — | `config/agents.yaml` | 智能体识别规则配置文件路径 |
+
+---
+
+## 🌐 Cloudflare Tunnel 公网发布与 ChatOps 免密直登
+
+无需公网 IP 和端口映射，支持配合 Cloudflare Tunnel 将监控台发布至公网，并在 Telegram Mini App、飞书、Discord 等应用中实现点击直登。
+
+### 1. 启动公网隧道模式与自动安全 Token
+```bash
+# 启动公网隧道模式（未指定 token 时系统自动生成 32 字节高熵防裸奔随机密钥）
+./bin/tmux-ui --tunnel --public-url https://tmux.yourdomain.com
+```
+
+终端将打印高亮免密直登卡片：
+```text
+┌────────────────────────────────────────────────────────────────────────────┐
+│                        tmux-ui Cloudflare Tunnel Ready                     │
+├────────────────────────────────────────────────────────────────────────────┤
+│ One-Click Public Login: https://tmux.yourdomain.com/?token=3d2984b6...     │
+│ Secret Auth Token:     3d2984b6...                                         │
+└────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 2. 内嵌应用无感秒登与防泄露机制
+- **Telegram Mini App / 飞书直登**：点击链接 `https://tmux.yourdomain.com/?token=...` 即可自动进入控制台。
+- **全链路自动鉴权**：前端自动从 URL 提取 Token 注入 WebSocket 与 REST API，并暂存至 `sessionStorage` 保证刷新不丢态。
+- **地址栏隐私净化**：成功提取后自动通过 `history.replaceState` 清除 URL 中的敏感 token 参数，防止用户在群内分享或截图时凭证意外泄露。
+- 详细生产与快速临时隧道配置参考：[`docs/cloudflare-tunnel.md`](docs/cloudflare-tunnel.md) 与 [`config/tunnel.yml.example`](config/tunnel.yml.example)。
+
+---
+
 ### 2. 源码构建
 
 #### 编译前端与后端（产出单二进制）
@@ -95,12 +198,17 @@ agents:
 
 ## 📚 规格资产库 (Spec-Driven Development)
 
-本工程严格遵循规范驱动开发（SDD）全流程，相关规格资产：
+本工程严格遵循规范驱动开发（SDD）全流程，多版本规格资产归档：
 
-- [产品需求规范 (Requirements)](docs/spec/versions/v1/requirements.md)
-- [系统架构与流程设计 (Design)](docs/spec/versions/v1/design.md)
-- [数据模型与状态机 (Data)](docs/spec/versions/v1/data.md)
-- [REST / WebSocket 接口契约 (API)](docs/spec/versions/v1/api.md)
-- [原子任务拆分与执行清单 (Tasks)](docs/spec/versions/v1/tasks.md)
-- [端到端可追溯性矩阵 (Traceability)](docs/spec/versions/v1/traceability.md)
-- [最终验收与测试交付报告](docs/spec/versions/v1/reports/acceptance-report-2026-11-11.md)
+- [版本总索引与当前活跃版本 (spec/README.md)](docs/spec/README.md)
+- **当前活跃版本 v3**：
+  - [v3 产品需求规范 (Requirements)](docs/spec/versions/v3/requirements.md)
+  - [v3 系统架构与流程设计 (Design)](docs/spec/versions/v3/design.md)
+  - [v3 数据模型与状态机 (Data)](docs/spec/versions/v3/data.md)
+  - [v3 REST / WebSocket 接口契约 (API)](docs/spec/versions/v3/api.md)
+  - [v3 原子任务拆分与执行清单 (Tasks)](docs/spec/versions/v3/tasks.md)
+  - [v3 端到端可追溯性矩阵 (Traceability)](docs/spec/versions/v3/traceability.md)
+  - [v3 最终验收与综合测试交付报告](docs/spec/versions/v3/reports/acceptance-report-2026-11-12.md)
+- **已完成历史版本**：
+  - [v1 基础拓扑采集与 Web 监控 (v1-finished)](docs/spec/versions/v1-finished/)
+  - [v2 历史快照持久化与移动端响应式 (v2-finished)](docs/spec/versions/v2-finished/)

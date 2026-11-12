@@ -3,15 +3,29 @@ import { useTmuxWS } from './hooks/useTmuxWS'
 import { useNotifications } from './hooks/useNotifications'
 import { OverviewGrid } from './components/OverviewGrid'
 import { TerminalViewer } from './components/TerminalViewer'
-import { apiClient } from './api/client'
+import { AuthErrorBanner } from './components/AuthErrorBanner'
+import { apiClient, addAuthErrorListener } from './api/client'
+import { initAuthToken } from './auth/tokenManager'
 import type { PaneDetail } from './types'
 import { Terminal, Activity, Wifi, WifiOff, Bell, BellRing } from 'lucide-react'
+
+// 在应用入口最先初始化 URL 免密凭据并静默净化地址栏
+initAuthToken()
 
 export const App: React.FC = () => {
   const { status, panes, lastEvent } = useTmuxWS()
   const { permission, requestPermission } = useNotifications({ lastEvent })
   const [selectedPaneId, setSelectedPaneId] = useState<string | null>(null)
   const [paneDetail, setPaneDetail] = useState<PaneDetail | null>(null)
+  const [authError, setAuthError] = useState<string | null>(null)
+
+  // 监听全局 401 鉴权异常
+  useEffect(() => {
+    const unsubscribe = addAuthErrorListener((msg) => {
+      setAuthError(msg)
+    })
+    return () => unsubscribe()
+  }, [])
 
   // 当选中某个 Pane 时，异步请求其全量详情
   useEffect(() => {
@@ -53,6 +67,9 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+      {/* 鉴权失败告警横幅 */}
+      <AuthErrorBanner message={authError} onDismiss={() => setAuthError(null)} />
+
       {/* 顶部全局导航 - 移动端紧凑自适应布局 */}
       <header className="sticky top-0 z-30 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md px-4 py-3 sm:px-6 sm:py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -64,7 +81,7 @@ export const App: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <h1 className="text-base sm:text-lg font-bold tracking-tight text-white">tmux-ui</h1>
                 <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-blue-400 font-mono font-medium border border-blue-500/20">
-                  v2.0
+                  v3.0
                 </span>
               </div>
               <p className="hidden sm:block text-xs text-slate-500">Autonomous Agent Monitoring Console</p>
@@ -136,7 +153,7 @@ export const App: React.FC = () => {
       {/* 底部状态条 */}
       <footer className="border-t border-slate-800/60 px-4 py-3 sm:px-6 text-xs text-slate-600 flex flex-col sm:flex-row items-center justify-between gap-1 max-w-7xl w-full mx-auto">
         <span>Selected Pane: {selectedPaneId || 'None (Overview Mode)'}</span>
-        <span>tmux-ui · Spec-Driven Development v2</span>
+        <span>tmux-ui · Spec-Driven Development v3</span>
       </footer>
     </div>
   )

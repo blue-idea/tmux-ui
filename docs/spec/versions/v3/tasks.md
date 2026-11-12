@@ -12,14 +12,14 @@
 
 ---
 
-- [ ] **TASK-020 · Cloudflare Tunnel 部署模板、实战文档与反向代理适配**
+- [x] **TASK-020 · Cloudflare Tunnel 部署模板、实战文档与反向代理适配**
 
   > 依赖：无
 
-  - [ ] 编写 Cloudflare Tunnel 生产与快速临时隧道实操部署指南 `docs/cloudflare-tunnel.md`
-  - [ ] 提供标准配置文件样例 `config/tunnel.yml.example`，配置 WebSocket 入口规则
-  - [ ] 优化 `internal/server/http_server.go`，增强 RealIP 中间件支持 `CF-Connecting-IP` 优先提取
-  - [ ] 编写 Go 测试用例验证反向代理请求头提取
+  - [x] 编写 Cloudflare Tunnel 生产与快速临时隧道实操部署指南 `docs/cloudflare-tunnel.md`
+  - [x] 提供标准配置文件样例 `config/tunnel.yml.example`，配置 WebSocket 入口规则
+  - [x] 优化 `internal/server/http_server.go`，增强 RealIP 中间件支持 `CF-Connecting-IP` 优先提取
+  - [x] 编写 Go 测试用例验证反向代理请求头提取
 
   **验证方式：**
   ```bash

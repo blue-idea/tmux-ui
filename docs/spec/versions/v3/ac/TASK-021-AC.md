@@ -14,3 +14,4 @@
 |---------|-------|:-------:|------------|:----:|------|---------|
 | TASK-021 | v3.REQ-001-AC-001 | Unit | Go 测试 TestFormatPublicURL 验证公网基础 URL 自动规范化追加 ?token=... 免密直登参数 | PASS | `go test -v ./internal/tunnel -run TestFormatPublicURL` | — |
 | TASK-021 | v3.REQ-001-AC-003 | Unit | Go 测试 TestGenerateSecureToken 与 TestEnsureTunnelSecurity 验证公网模式未配 Token 时自动生成 32 字节高熵随机 Token 防裸奔 | PASS | `go test -v ./internal/tunnel -run TestEnsureTunnelSecurity` | — |
+

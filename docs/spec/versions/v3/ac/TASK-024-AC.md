@@ -13,3 +13,4 @@
 | TASK ID | AC ID | QA 类型 | 实际结果摘要 | 状态 | 证据 | 错误详情 |
 |---------|-------|:-------:|------------|:----:|------|---------|
 | TASK-024 | v3.REQ-003-AC-001 | Unit | 前端单元测试验证 useTmuxWS 在未传 options.token 时自动从 tokenManager 解析有效 Token 并注入握手 URL ?token=... | PASS | `pnpm test src/hooks/useTmuxWS.test.ts` | — |
+

@@ -149,3 +149,43 @@ tmux-ui v1 和 v2 版本构建了本地 tmux 智能体拓扑监控、实时 ANSI
     side_effects:
       - "Auth error banner or toast rendered in UI with clear English message"
 ```
+
+---
+
+### 需求 v3.REQ-004 · CLI 实时状态查询与终端渲染
+
+**用户故事：** 作为习惯于命令行工作的运维者或开发者，我希望通过命令行子命令直接在终端快速查看当前所有 tmux 会话与智能体的实时运行状态，无需打开浏览器。
+
+#### 验收标准
+
+```yaml
+- id: v3.REQ-004-AC-001
+  ears: >
+    When the user executes "tmux-ui status",
+    the CLI shall inspect the active tmux panes and output a well-aligned ASCII table displaying Pane ID, Session, Agent Type, State, Current Command, Idle Time, and Preview.
+  test_type: Unit
+  expected:
+    return_value: "Formatted ASCII table with headers and pane rows"
+    throws: ""
+
+- id: v3.REQ-004-AC-002
+  ears: >
+    When the user executes "tmux-ui status --json",
+    the CLI shall output valid JSON array format of all pane statuses for script automation.
+  test_type: Unit
+  expected:
+    return_value: "Valid JSON array matching []PaneSummary schema"
+    throws: ""
+
+- id: v3.REQ-004-AC-003
+  ears: >
+    When the user specifies "--server <URL>",
+    the CLI shall query the running tmux-ui server REST API /api/v1/panes (with optional --token Bearer authentication);
+    when --server is omitted, it shall directly execute local tmux inspection.
+  test_type: Unit
+  expected:
+    return_value: "Pane status retrieved successfully from remote server or local collector"
+    throws: ""
+```
+
+

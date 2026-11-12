@@ -143,3 +143,47 @@
   _需求: `requirements.md` 中 v3.REQ-003
   验收标准：v3.REQ-003-AC-003
   _测试类型: Unit
+
+---
+
+- [ ] **TASK-026 · CLI 实时状态查询引擎、表格格式化与 JSON 输出**
+
+  > 依赖：无
+
+  - [ ] 新建 `internal/cli` 模块，实现 `StatusOptions`、`FormatStatusTable` 与 `FormatStatusJSON`
+  - [ ] 实现 `FetchStatusFromServer` 与 `CollectLocalStatus` 双模查询逻辑
+  - [ ] 在 `cmd/tmux-ui/main.go` 中接入 `status`、`ps`、`ls` 子命令分发路由
+  - [ ] 编写 Go 单元测试覆盖表格格式化、JSON 格式化、服务端与本地拉取场景
+
+  **验证方式：**
+  ```bash
+  go test -v ./internal/cli/...
+  ```
+
+  **验收证据：** Go 单元测试通过，`tmux-ui status` 与 `tmux-ui status --json` 输出均符合规约。
+
+  _需求: `requirements.md` 中 v3.REQ-004
+  验收标准：v3.REQ-004-AC-001, v3.REQ-004-AC-002, v3.REQ-004-AC-003
+  _测试类型: Unit
+
+---
+
+- [ ] **TASK-027 · README.md 命令行使用手册与端到端真实验证**
+
+  > 依赖：TASK-026
+
+  - [ ] 更新项目根目录 `README.md`，增加完整的命令行实时状态查询指南、常用命令、参数表与终端表格效果展示
+  - [ ] 在真实环境中执行 `bin/tmux-ui status` 与 `bin/tmux-ui status --json`，记录命令行真实输出日志
+  - [ ] 补充 Cloudflare Tunnel 快速穿透与免密 URL 在 README 中的简明引导
+
+  **验证方式：**
+  ```bash
+  ./bin/tmux-ui status
+  ```
+
+  **验收证据：** README.md 文档完整详实，CLI 真实执行无报错，产出验收矩阵。
+
+  _需求: `requirements.md` 中 v3.REQ-004
+  验收标准：v3.REQ-004-AC-001, v3.REQ-004-AC-002
+  _测试类型: Manual
+

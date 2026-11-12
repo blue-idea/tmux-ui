@@ -64,3 +64,4 @@ wss://agents.example.com/ws?token=a8f9c1e204b789d31f0e4c6a8b7c9e12
 }
 ```
 前端捕获该响应后，激活全局认证异常横幅并提示用户凭证无效。
+

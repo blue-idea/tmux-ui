@@ -97,3 +97,4 @@ ok  	tmux-ui/internal/tunnel   	3.098s	coverage: 54.5% of statements
 ## 5. 验收结论
 
 tmux-ui v3 版本需求与 6 项实施任务全部高标准交付，所有单元测试、组件测试、单二进制内嵌构建及多视口 Playwright 视觉回归测试均 100% 通过（PASS），满足上线与生产交付条件。
+

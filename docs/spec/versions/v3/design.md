@@ -191,3 +191,4 @@ sequenceDiagram
 
 详细 API 规范与反向代理协议头设计见独立文档：
 → 详见 `docs/spec/versions/v3/api.md`
+

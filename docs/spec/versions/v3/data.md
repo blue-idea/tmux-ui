@@ -49,3 +49,4 @@ export interface AuthState {
   authError: string | null
 }
 ```
+

@@ -14,3 +14,4 @@
 |---------|-------|:-------:|------------|:----:|------|---------|
 | TASK-020 | v3.REQ-001-AC-002 | API | Go 单元测试 TestHTTPServer_RealIP_Cloudflare 验证 CF-Connecting-IP 与 X-Forwarded-For 正确解析 | PASS | `go test -v ./internal/server -run TestHTTPServer_RealIP_Cloudflare` | — |
 | TASK-020 | v3.REQ-001-AC-004 | Manual | 编写生产与快速隧道实战部署文档 docs/cloudflare-tunnel.md 与配置文件样例 config/tunnel.yml.example | PASS | `config/tunnel.yml.example`, `docs/cloudflare-tunnel.md` | — |
+

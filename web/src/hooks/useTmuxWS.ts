@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { getAuthToken } from '../auth/tokenManager'
 import type {
   PaneSummary,
   ConnectionStatus,
@@ -34,7 +35,7 @@ export function useTmuxWS(options: UseTmuxWSOptions = {}): UseTmuxWSReturn {
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isUnmountedRef = useRef(false)
 
-  // 构造 WebSocket 连接地址
+  // 构造 WebSocket 连接地址（自动附加 URL/sessionStorage 凭据）
   const buildWSUrl = useCallback(() => {
     let targetUrl = url
     if (!targetUrl) {
@@ -46,9 +47,12 @@ export function useTmuxWS(options: UseTmuxWSOptions = {}): UseTmuxWSReturn {
       }
     }
 
-    if (token) {
+    // 优先使用显式 options.token，回退使用全局持久化的 AuthToken
+    const activeToken = token || getAuthToken() || undefined
+
+    if (activeToken && !targetUrl.includes('token=')) {
       const separator = targetUrl.includes('?') ? '&' : '?'
-      targetUrl = `${targetUrl}${separator}token=${encodeURIComponent(token)}`
+      targetUrl = `${targetUrl}${separator}token=${encodeURIComponent(activeToken)}`
     }
     return targetUrl
   }, [url, token])

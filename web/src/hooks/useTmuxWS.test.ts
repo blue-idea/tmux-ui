@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { useTmuxWS } from './useTmuxWS'
+import { setAuthToken, clearAuthToken } from '../auth/tokenManager'
 import type { PaneSummary } from '@/types'
 
 // Mock 浏览器 WebSocket
@@ -182,6 +183,25 @@ describe('useTmuxWS', () => {
     })
 
     expect(MockWebSocket.instances.length).toBe(2)
+  })
+
+  it('v3.REQ-003-AC-001: 当未显式传入 token 时，自动从 tokenManager 提取并追加 ?token=... 到握手 URL', () => {
+    setAuthToken('auto_injected_ws_token_999')
+    renderHook(() => useTmuxWS())
+
+    expect(MockWebSocket.instances.length).toBe(1)
+    expect(MockWebSocket.instances[0].url).toContain('token=auto_injected_ws_token_999')
+    clearAuthToken()
+  })
+
+  it('当显式传入 options.token 时，优先使用显式指定的 token', () => {
+    setAuthToken('cached_token')
+    renderHook(() => useTmuxWS({ token: 'explicit_token' }))
+
+    expect(MockWebSocket.instances.length).toBe(1)
+    expect(MockWebSocket.instances[0].url).toContain('token=explicit_token')
+    expect(MockWebSocket.instances[0].url).not.toContain('cached_token')
+    clearAuthToken()
   })
 })
 

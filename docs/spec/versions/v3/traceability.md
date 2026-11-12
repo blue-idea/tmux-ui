@@ -31,7 +31,7 @@
 | TASK-024 | 前端 WebSocket 握手 Token 自动链式注入与断线重连 | v3.REQ-003 / AC-001 | done | web/src/hooks/useTmuxWS.ts | web/src/hooks/useTmuxWS.test.ts | docs/spec/versions/v3/ac/TASK-024-AC.md | 2026-11-12 |
 | TASK-025 | 鉴权异常横幅组件与全链路集成端到端验收 | v3.REQ-003 / AC-003 | done | web/src/components/AuthErrorBanner.tsx, web/src/App.tsx | web/src/components/AuthErrorBanner.test.tsx | docs/spec/versions/v3/ac/TASK-025-AC.md | 2026-11-12 |
 | TASK-026 | CLI 实时状态查询引擎、表格格式化与 JSON 输出 | v3.REQ-004 / AC-001, AC-002, AC-003 | done | internal/cli/status.go, cmd/tmux-ui/main.go | internal/cli/status_test.go | docs/spec/versions/v3/ac/TASK-026-AC.md | 2026-11-12 |
-| TASK-027 | README.md 命令行使用手册与端到端真实验证 | v3.REQ-004 / AC-001, AC-002 | 待开始 | — | — | — | — |
+| TASK-027 | README.md 命令行使用手册与端到端真实验证 | v3.REQ-004 / AC-001, AC-002 | done | README.md | docs/spec/versions/v3/ac/TASK-027-AC.md | docs/spec/versions/v3/ac/TASK-027-AC.md | 2026-11-12 |
 
 ---
 

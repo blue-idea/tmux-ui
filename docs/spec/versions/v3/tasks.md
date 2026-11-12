@@ -168,13 +168,13 @@
 
 ---
 
-- [ ] **TASK-027 · README.md 命令行使用手册与端到端真实验证**
+- [x] **TASK-027 · README.md 命令行使用手册与端到端真实验证**
 
   > 依赖：TASK-026
 
-  - [ ] 更新项目根目录 `README.md`，增加完整的命令行实时状态查询指南、常用命令、参数表与终端表格效果展示
-  - [ ] 在真实环境中执行 `bin/tmux-ui status` 与 `bin/tmux-ui status --json`，记录命令行真实输出日志
-  - [ ] 补充 Cloudflare Tunnel 快速穿透与免密 URL 在 README 中的简明引导
+  - [x] 更新项目根目录 `README.md`，增加完整的命令行实时状态查询指南、常用命令、参数表与终端表格效果展示
+  - [x] 在真实环境中执行 `bin/tmux-ui status` 与 `bin/tmux-ui status --json`，记录命令行真实输出日志
+  - [x] 补充 Cloudflare Tunnel 快速穿透与免密 URL 在 README 中的简明引导
 
   **验证方式：**
   ```bash

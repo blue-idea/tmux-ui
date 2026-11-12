@@ -25,3 +25,4 @@ describe('AuthErrorBanner 组件', () => {
     expect(container.firstChild).toBeNull()
   })
 })
+

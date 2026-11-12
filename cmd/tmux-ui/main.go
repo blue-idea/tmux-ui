@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"tmux-ui/internal/cli"
 	"tmux-ui/internal/collector"
 	"tmux-ui/internal/config"
 	"tmux-ui/internal/detector"
@@ -23,9 +24,48 @@ import (
 )
 
 func main() {
-	// 命令行参数定义
+	// 1. 处理 status / ps / ls 命令行子命令分发
+	if len(os.Args) > 1 && (os.Args[1] == "status" || os.Args[1] == "ps" || os.Args[1] == "ls") {
+		statusCmd := flag.NewFlagSet("status", flag.ExitOnError)
+		jsonOut := statusCmd.Bool("json", false, "Output real-time status in structured JSON format")
+		serverURL := statusCmd.String("server", "", "URL of running tmux-ui server (e.g. http://127.0.0.1:8080)")
+		token := statusCmd.String("token", "", "Authentication token for server query")
+		socketName := statusCmd.String("socket-name", "", "Tmux socket name (-L)")
+		socketPath := statusCmd.String("socket-path", "", "Tmux socket path (-S)")
+		configPath := statusCmd.String("config", "config/agents.yaml", "Path to agent rules configuration YAML")
+		_ = statusCmd.Parse(os.Args[2:])
+
+		if envToken := os.Getenv("TMUX_UI_TOKEN"); envToken != "" && *token == "" {
+			*token = envToken
+		}
+		if envServer := os.Getenv("TMUX_UI_SERVER"); envServer != "" && *serverURL == "" {
+			*serverURL = envServer
+		}
+
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		err := cli.RunStatus(ctx, cli.StatusOptions{
+			ServerURL:  *serverURL,
+			Token:      *token,
+			JSONOutput: *jsonOut,
+			SocketName: *socketName,
+			SocketPath: *socketPath,
+			ConfigPath: *configPath,
+		}, os.Stdout)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		return
+	}
+
+	// 2. 默认可视化 HTTP 服务端参数解析
 	port := flag.Int("port", 8080, "HTTP server listening port")
 	token := flag.String("token", "", "Optional authentication token for REST API and WebSocket")
+	statusMode := flag.Bool("status", false, "Output real-time status table and exit")
+	jsonMode := flag.Bool("json", false, "Output real-time status in JSON format (when used with --status)")
+	serverQuery := flag.String("server", "", "URL of running tmux-ui server (when querying status)")
 	tunnelEnabled := flag.Bool("tunnel", false, "Enable Cloudflare Tunnel integration and enforce authentication")
 	publicURL := flag.String("public-url", "", "Public domain or Cloudflare Tunnel URL (e.g. https://tmux.example.com)")
 	cloudflaredBin := flag.String("cloudflared-bin", "cloudflared", "Path to cloudflared executable")
@@ -34,6 +74,29 @@ func main() {
 	configPath := flag.String("config", "config/agents.yaml", "Path to agent rules configuration YAML")
 	intervalMs := flag.Int("interval", 1000, "Polling interval in milliseconds")
 	flag.Parse()
+
+	// 3. 支持以 flag 形式执行 --status
+	if *statusMode {
+		if envToken := os.Getenv("TMUX_UI_TOKEN"); envToken != "" && *token == "" {
+			*token = envToken
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		err := cli.RunStatus(ctx, cli.StatusOptions{
+			ServerURL:  *serverQuery,
+			Token:      *token,
+			JSONOutput: *jsonMode,
+			SocketName: *socketName,
+			SocketPath: *socketPath,
+			ConfigPath: *configPath,
+		}, os.Stdout)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		return
+	}
 
 	// 环境变量覆盖兜底
 	if envPort := os.Getenv("PORT"); envPort != "" {

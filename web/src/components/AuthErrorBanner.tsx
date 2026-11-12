@@ -39,3 +39,4 @@ export const AuthErrorBanner: React.FC<AuthErrorBannerProps> = ({ message, onDis
     </div>
   )
 }
+

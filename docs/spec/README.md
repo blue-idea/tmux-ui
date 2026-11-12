@@ -9,7 +9,7 @@
 ## 当前活跃 Version
 
 ```yaml
-current_version: v2
+current_version: v3
 ```
 
 ---
@@ -19,8 +19,9 @@ current_version: v2
 | Version | 状态 | 路径 | 说明 |
 |---------|:----:|------|------|
 | v1 | finished | `docs/spec/versions/v1-finished/` | 首个 version，基础拓扑采集、状态引擎与 Web 监控完成交付 |
-| v2 | active | `docs/spec/versions/v2/` | 当前活跃 version，历史快照回放与移动端自适应优化 |
-| v3 | planned | `docs/spec/versions/v3/` | 待启动新需求迭代 |
+| v2 | finished | `docs/spec/versions/v2-finished/` | 历史快照回放与移动端自适应优化 |
+| v3 | active | `docs/spec/versions/v3/` | Cloudflare Tunnel 公网隧道支持与免密 URL 参数无感秒登 |
+| v4 | planned | `docs/spec/versions/v4/` | 待启动新需求迭代 |
 
 > 完成一个 version 时：
 > 1. 将目录改名 `v1` → `v1-finished`

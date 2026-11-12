@@ -243,6 +243,7 @@ func (s *JSONLStorage) pruneLocked(paneID string) error {
 	if err := scanner.Err(); err != nil {
 		return err
 	}
+	_ = f.Close()
 
 	// 判定是否需要裁剪（行数超限或字节大小超限）
 	needsPruning := len(lines) > s.cfg.MaxSnapshotsPerPane || fileInfo.Size() > s.cfg.MaxBytesPerPane

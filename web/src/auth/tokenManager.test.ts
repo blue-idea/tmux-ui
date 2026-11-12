@@ -4,8 +4,6 @@ import {
   getAuthToken,
   setAuthToken,
   clearAuthToken,
-  extractTokenFromUrl,
-  scrubUrlToken,
 } from './tokenManager'
 
 describe('tokenManager 凭据与免密秒登管理', () => {

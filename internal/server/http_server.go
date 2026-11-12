@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
+	"net"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -46,10 +47,68 @@ type HTTPServer struct {
 	historyStorage SnapshotReader
 }
 
+// GetClientIP 提取请求的真实客户端公网 IP，优先识别 Cloudflare CF-Connecting-IP 与反向代理头
+func GetClientIP(r *http.Request) string {
+	if r == nil {
+		return ""
+	}
+
+	// 1. Cloudflare 边缘真实用户 IP (CF-Connecting-IP / True-Client-IP)
+	if cfIP := strings.TrimSpace(r.Header.Get("CF-Connecting-IP")); cfIP != "" {
+		return cfIP
+	}
+	if trueIP := strings.TrimSpace(r.Header.Get("True-Client-IP")); trueIP != "" {
+		return trueIP
+	}
+
+	// 2. X-Forwarded-For 链中的第一个真实 IP
+	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
+		parts := strings.Split(xff, ",")
+		if len(parts) > 0 {
+			first := strings.TrimSpace(parts[0])
+			if first != "" {
+				return first
+			}
+		}
+	}
+
+	// 3. X-Real-IP
+	if xRealIP := strings.TrimSpace(r.Header.Get("X-Real-IP")); xRealIP != "" {
+		return xRealIP
+	}
+
+	// 4. 直连 RemoteAddr 解析 Host
+	remote := strings.TrimSpace(r.RemoteAddr)
+	if remote != "" {
+		if host, _, err := net.SplitHostPort(remote); err == nil && host != "" {
+			return host
+		}
+		return remote
+	}
+
+	return ""
+}
+
+// CloudflareRealIPMiddleware 将 Cloudflare 与反向代理客户端 IP 规范化写入 RemoteAddr
+func CloudflareRealIPMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if clientIP := GetClientIP(r); clientIP != "" {
+			_, port, err := net.SplitHostPort(r.RemoteAddr)
+			if err == nil && port != "" {
+				r.RemoteAddr = net.JoinHostPort(clientIP, port)
+			} else {
+				r.RemoteAddr = clientIP
+			}
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 // NewHTTPServer 构造并初始化路由规则
 func NewHTTPServer(opts HTTPServerOptions) *HTTPServer {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
+	r.Use(CloudflareRealIPMiddleware)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
 

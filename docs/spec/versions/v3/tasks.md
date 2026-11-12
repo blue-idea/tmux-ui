@@ -124,14 +124,14 @@
 
 ---
 
-- [ ] **TASK-025 · 鉴权异常横幅组件与全链路集成端到端验收**
+- [x] **TASK-025 · 鉴权异常横幅组件与全链路集成端到端验收**
 
   > 依赖：TASK-021, TASK-023, TASK-024
 
-  - [ ] 新建 `web/src/components/AuthErrorBanner.tsx`，展示优雅的英文鉴权失败与登录引导
-  - [ ] 整合进 `web/src/App.tsx` 全局状态联动
-  - [ ] 执行全套自动化测试（Go 后端测试 + 前端全部 Vitest 测试）
-  - [ ] 编译单二进制可执行文件 `bin/tmux-ui` 并进行多视口集成验证与留证
+  - [x] 新建 `web/src/components/AuthErrorBanner.tsx`，展示优雅的英文鉴权失败与登录引导
+  - [x] 整合进 `web/src/App.tsx` 全局状态联动
+  - [x] 执行全套自动化测试（Go 后端测试 + 前端全部 Vitest 测试）
+  - [x] 编译单二进制可执行文件 `bin/tmux-ui` 并进行多视口集成验证与留证
 
   **验证方式：**
   ```bash

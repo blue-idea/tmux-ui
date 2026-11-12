@@ -107,3 +107,4 @@ https://tmux.yourdomain.com/?token=<YOUR_TOKEN>
 2. **会话持久化**：Token 暂存至会话存储（`sessionStorage`），多标签或刷新不会丢失。
 3. **地址栏净化**：前端无刷新移除 URL 上的 `?token=...`，防止用户在分享当前网页时泄漏凭证。
 4. **全链路注入**：WebSocket 和所有后端 REST API 自动附带 Token，秒级渲染终端。
+

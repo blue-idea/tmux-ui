@@ -86,3 +86,4 @@ describe('HTTP API 统一客户端与自动鉴权 (client.ts)', () => {
     await expect(fetchWithAuth('/api/v1/panes/%251')).rejects.toThrow('Authentication token is missing or invalid')
   })
 })
+

@@ -22,3 +22,4 @@ ingress:
 
   # 2. 默认 404 兜底规则（cloudflared 严格要求必须以 catch-all 结尾）
   - service: http_status:404
+

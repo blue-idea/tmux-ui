@@ -122,3 +122,4 @@ export function setAuthToken(token: string | null): void {
 export function clearAuthToken(): void {
   setAuthToken(null)
 }
+

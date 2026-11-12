@@ -102,14 +102,14 @@
 
 ---
 
-- [ ] **TASK-024 · 前端 WebSocket 握手 Token 自动链式注入与断线重连**
+- [x] **TASK-024 · 前端 WebSocket 握手 Token 自动链式注入与断线重连**
 
   > 依赖：TASK-022
 
-  - [ ] 改造 `web/src/hooks/useTmuxWS.ts`，自动从 `tokenManager` 解析当前有效 Token
-  - [ ] 在 `buildWSUrl` 中自动将 Token 注入为 `?token=<token>` 参数
-  - [ ] 保证断线自动重连时持续复用最新 Token 凭证
-  - [ ] 编写与更新 Vitest 单元测试验证各种传参模式下的握手 URL
+  - [x] 改造 `web/src/hooks/useTmuxWS.ts`，自动从 `tokenManager` 解析当前有效 Token
+  - [x] 在 `buildWSUrl` 中自动将 Token 注入为 `?token=<token>` 参数
+  - [x] 保证断线自动重连时持续复用最新 Token 凭证
+  - [x] 编写与更新 Vitest 单元测试验证各种传参模式下的握手 URL
 
   **验证方式：**
   ```bash

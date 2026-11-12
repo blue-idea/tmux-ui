@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { SnapshotMetadata, SnapshotRecord } from '@/types'
+import type { SnapshotMetadata } from '@/types'
+import { apiClient } from '@/api/client'
 
 export interface UseHistoryReturn {
   snapshots: SnapshotMetadata[]
@@ -26,12 +27,9 @@ export function useHistory(paneId: string): UseHistoryReturn {
   const refreshSnapshots = useCallback(async () => {
     if (!paneId) return
     try {
-      const encodedId = encodeURIComponent(paneId)
-      const res = await fetch(`/api/v1/panes/${encodedId}/snapshots`)
-      if (!res.ok) return
-      const json = await res.json()
-      if (json && Array.isArray(json.data)) {
-        setSnapshots(json.data)
+      const data = await apiClient.getSnapshots(paneId)
+      if (Array.isArray(data)) {
+        setSnapshots(data)
       }
     } catch {
       // 忽略请求异常
@@ -47,12 +45,8 @@ export function useHistory(paneId: string): UseHistoryReturn {
     if (!paneId || !snapshotId) return
     setIsLoading(true)
     try {
-      const encodedId = encodeURIComponent(paneId)
-      const res = await fetch(`/api/v1/panes/${encodedId}/snapshots/${snapshotId}`)
-      if (!res.ok) throw new Error('Failed to fetch snapshot detail')
-      const json = await res.json()
-      if (json && json.data) {
-        const record = json.data as SnapshotRecord
+      const record = await apiClient.getSnapshotDetail(paneId, snapshotId)
+      if (record) {
         setPlaybackOutput(record.output_buffer || '')
         setActiveSnapshotId(snapshotId)
         setIsLive(false)
